@@ -198,10 +198,7 @@ const LayerItem: React.FC<LayerItemProps> = ({
       ref={drop}
       className={`mb-2 border rounded ${isDragging ? "opacity-50" : ""}`}
     >
-      <div
-        className="flex justify-between items-center p-3 bg-gray-100 cursor-pointer"
-        onClick={toggleExpansion}
-      >
+      <div className="flex justify-between items-center p-3 bg-gray-100 cursor-pointer">
         <div className="flex items-center">
           <span ref={drag} className="cursor-move mr-2">
             <FaGripVertical />
@@ -221,11 +218,13 @@ const LayerItem: React.FC<LayerItemProps> = ({
           >
             <FaTrash />
           </button>
-          {isExpanded ? (
-            <FaChevronUp className="ml-2" />
-          ) : (
-            <FaChevronDown className="ml-2" />
-          )}
+          <div onClick={toggleExpansion}>
+            {isExpanded ? (
+              <FaChevronUp className="ml-2" />
+            ) : (
+              <FaChevronDown className="ml-2" />
+            )}
+          </div>
         </div>
       </div>
       {isExpanded && (
