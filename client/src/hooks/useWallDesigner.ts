@@ -25,10 +25,10 @@ export const useWallDesigner = () => {
   const handleAddLayer = useCallback(() => {
     const newLayer: LayerType = {
       id: uuidv4(),
-      material: "סוג חומר",
-      manufacturer: "יצרן",
-      product: "סוג מוצר",
-      thickness: 0.1,
+      material: "",
+      manufacturer: "",
+      product: "",
+      thickness: 0,
       min: 1,
       max: 10,
       thermal: 0.1,

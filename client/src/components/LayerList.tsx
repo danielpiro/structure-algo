@@ -1,43 +1,84 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { useDrag, useDrop } from 'react-dnd';
-import { LayerType } from '../types';
-import { FaTrash, FaPlus, FaGripVertical, FaPalette, FaChevronUp, FaChevronDown } from 'react-icons/fa';
-import Select from 'react-select';
-import { getItem, item, manufacturers, materials, products } from '../data/Materials';
+import React, { useState, useRef, useEffect, useCallback } from "react";
+import { useDrag, useDrop } from "react-dnd";
+import { LayerType } from "../types";
+import {
+  FaTrash,
+  FaPlus,
+  FaGripVertical,
+  FaPalette,
+  FaChevronUp,
+  FaChevronDown,
+} from "react-icons/fa";
+import Select from "react-select";
+import {
+  getItem,
+  item,
+  manufacturers,
+  materials,
+  products,
+} from "../data/Materials";
 
 const colorOptions = [
-  '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8',
-  '#F7DC6F', '#BB8FCE', '#F1948A', '#82E0AA', '#85C1E9',
-  '#FF4757', '#2ED573', '#5352ED', '#FF6B81', '#1E90FF',
-  '#FFA502', '#FF6348', '#747D8C', '#2F3542', '#70A1FF',
-  '#3742FA', '#2F3640', '#8C7AE6', '#FFC312', '#C4E538',
-  '#12CBC4', '#FDA7DF', '#ED4C67', '#F79F1F', '#A3CB38'
+  "#FF6B6B",
+  "#4ECDC4",
+  "#45B7D1",
+  "#FFA07A",
+  "#98D8C8",
+  "#F7DC6F",
+  "#BB8FCE",
+  "#F1948A",
+  "#82E0AA",
+  "#85C1E9",
+  "#FF4757",
+  "#2ED573",
+  "#5352ED",
+  "#FF6B81",
+  "#1E90FF",
+  "#FFA502",
+  "#FF6348",
+  "#747D8C",
+  "#2F3542",
+  "#70A1FF",
+  "#3742FA",
+  "#2F3640",
+  "#8C7AE6",
+  "#FFC312",
+  "#C4E538",
+  "#12CBC4",
+  "#FDA7DF",
+  "#ED4C67",
+  "#F79F1F",
+  "#A3CB38",
 ];
 
 interface LayerItemProps {
   layer: LayerType;
   index: number;
-  onChange: (id: string, field: keyof LayerType, value: string | number) => void;
+  onChange: (
+    id: string,
+    field: keyof LayerType,
+    value: string | number
+  ) => void;
   onRemove: (id: string) => void;
   moveLayer: (dragIndex: number, hoverIndex: number) => void;
   isExpanded: boolean;
   toggleExpansion: () => void;
 }
 
-const LayerItem: React.FC<LayerItemProps> = ({ 
-  layer, 
-  index, 
-  onChange, 
-  onRemove, 
-  moveLayer, 
+const LayerItem: React.FC<LayerItemProps> = ({
+  layer,
+  index,
+  onChange,
+  onRemove,
+  moveLayer,
   isExpanded,
-  toggleExpansion
+  toggleExpansion,
 }) => {
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
   const colorPickerRef = useRef<HTMLDivElement>(null);
 
   const [{ isDragging }, drag] = useDrag({
-    type: 'LAYER',
+    type: "LAYER",
     item: { index },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
@@ -45,7 +86,7 @@ const LayerItem: React.FC<LayerItemProps> = ({
   });
 
   const [, drop] = useDrop({
-    accept: 'LAYER',
+    accept: "LAYER",
     hover(item: { index: number }) {
       const dragIndex = item.index;
       const hoverIndex = index;
@@ -55,30 +96,55 @@ const LayerItem: React.FC<LayerItemProps> = ({
     },
   });
 
-  const handleTypeChange = (option: { value: string; label: string } | null) => {
-    const newType = option?.value || '';
-    onChange(layer.id, 'material', newType);
+  const handleTypeChange = (
+    option: { value: string; label: string } | null
+  ) => {
+    const newType = option?.value || "";
+    onChange(layer.id, "material", newType);
     // Reset subsequent fields
-    onChange(layer.id, 'manufacturer', '');
-    onChange(layer.id, 'product', '');
+    onChange(layer.id, "manufacturer", "");
+    onChange(layer.id, "product", "");
   };
 
-  const handleManufacturerChange = (option: { value: string; label: string } | null) => {
-    const newManufacturer = option?.value || '';
-    onChange(layer.id, 'manufacturer', newManufacturer);
+  const handleManufacturerChange = (
+    option: { value: string; label: string } | null
+  ) => {
+    const newManufacturer = option?.value || "";
+    onChange(layer.id, "manufacturer", newManufacturer);
     // Reset product when manufacturer changes
-    onChange(layer.id, 'product', '');
+    onChange(layer.id, "product", "");
+  };
+
+  const handleThicknessChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value;
+
+    // Allow empty input for user to start typing
+    if (value === "") {
+      onChange(layer.id, "thickness", layer.min);
+      return;
+    }
+
+    let thickness = Number(value);
+
+    // Constrain the value within min and max
+    if (!isNaN(thickness)) {
+      thickness = Math.max(layer.min, Math.min(layer.max, thickness));
+      onChange(layer.id, "thickness", thickness);
+    }
   };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (colorPickerRef.current && !colorPickerRef.current.contains(event.target as Node)) {
+      if (
+        colorPickerRef.current &&
+        !colorPickerRef.current.contains(event.target as Node)
+      ) {
         setIsColorPickerOpen(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -92,7 +158,10 @@ const LayerItem: React.FC<LayerItemProps> = ({
         <FaPalette className="text-white w-4 h-4 m-auto" />
       </button>
       {isColorPickerOpen && (
-        <div className="absolute z-10 right-0 mt-2 p-2 bg-white rounded-md shadow-lg" style={{ width: '200px' }}>
+        <div
+          className="absolute z-10 right-0 mt-2 p-2 bg-white rounded-md shadow-lg"
+          style={{ width: "200px" }}
+        >
           <div className="grid grid-cols-6 gap-1">
             {colorOptions.map((color) => (
               <button
@@ -100,7 +169,7 @@ const LayerItem: React.FC<LayerItemProps> = ({
                 className="w-6 h-6 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 style={{ backgroundColor: color }}
                 onClick={() => {
-                  onChange(layer.id, 'color', color);
+                  onChange(layer.id, "color", color);
                   setIsColorPickerOpen(false);
                 }}
               />
@@ -112,64 +181,132 @@ const LayerItem: React.FC<LayerItemProps> = ({
   );
 
   return (
-    <div ref={drop} className={`mb-2 border rounded ${isDragging ? 'opacity-50' : ''}`}>
-      <div className="flex justify-between items-center p-3 bg-gray-100 cursor-pointer" onClick={toggleExpansion}>
+    <div
+      ref={drop}
+      className={`mb-2 border rounded ${isDragging ? "opacity-50" : ""}`}
+    >
+      <div
+        className="flex justify-between items-center p-3 bg-gray-100 cursor-pointer"
+        onClick={toggleExpansion}
+      >
         <div className="flex items-center">
           <span ref={drag} className="cursor-move mr-2">
             <FaGripVertical />
           </span>
-          <h3 className="font-semibold">Layer {index + 1}: {layer.material}</h3>
+          <h3 className="font-semibold">
+            Layer {index + 1}: {layer.material}
+          </h3>
         </div>
         <div className="flex items-center">
           <ColorPicker />
-          <button onClick={(e) => { e.stopPropagation(); onRemove(layer.id); }} className="text-red-500 ml-2">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onRemove(layer.id);
+            }}
+            className="text-red-500 ml-2"
+          >
             <FaTrash />
           </button>
-          {isExpanded ? <FaChevronUp className="ml-2" /> : <FaChevronDown className="ml-2" />}
+          {isExpanded ? (
+            <FaChevronUp className="ml-2" />
+          ) : (
+            <FaChevronDown className="ml-2" />
+          )}
         </div>
       </div>
       {isExpanded && (
         <div className="p-4">
           <div className="grid grid-cols-1 gap-2">
-          <div>
-              <label className="block text-sm font-medium text-gray-700">Type</label>
+            <div>
+              <label
+                dir="rtl"
+                className="block text-md font-bold text-gray-700"
+              >
+                סוג חומר
+              </label>
               <Select
-                options={materials.map((value) => ({ value: value, label: value }))}
-                value={layer.material ? { value: layer.material, label: layer.material } : null}
+                isRtl={true}
+                options={materials.map((value) => ({
+                  value: value,
+                  label: value,
+                }))}
+                value={
+                  layer.material
+                    ? { value: layer.material, label: layer.material }
+                    : null
+                }
                 onChange={handleTypeChange}
                 className="mt-1"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Supplier</label>
+              <label
+                dir="rtl"
+                className="block text-md font-bold text-gray-700"
+              >
+                ספק
+              </label>
               <Select
+                isRtl={true}
                 isDisabled={!layer.material}
-                options={manufacturers(layer.material).map((value) => ({ value: value, label: value }))}
-                value={layer.manufacturer ? { value: layer.manufacturer, label: layer.manufacturer } : null}
+                options={manufacturers(layer.material).map((value) => ({
+                  value: value,
+                  label: value,
+                }))}
+                value={
+                  layer.manufacturer
+                    ? { value: layer.manufacturer, label: layer.manufacturer }
+                    : null
+                }
                 onChange={handleManufacturerChange}
                 className="mt-1"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Product</label>
+              <label
+                dir="rtl"
+                className="block text-md font-bold text-gray-700"
+              >
+                מוצר
+              </label>
               <Select
+                isRtl={true}
                 isDisabled={!layer.material || !layer.manufacturer}
-                options={products(layer.material, layer.manufacturer).map((value) => ({ value: value, label: value }))}
+                options={products(layer.material, layer.manufacturer).map(
+                  (value) => ({ value: value, label: value })
+                )}
                 value={{ value: layer.product, label: layer.product }}
-                onChange={(option) => onChange(layer.id, 'product', option?.value || '')}
+                onChange={(option) =>
+                  onChange(layer.id, "product", option?.value || "")
+                }
                 className="mt-1"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Thickness (cm): {layer.thickness}</label>
+              <label
+                dir="rtl"
+                className="block text-md font-bold text-gray-700"
+              >
+                עובי (ס"מ): {layer.thickness}
+              </label>
               <input
-                type="range"
+                dir="rtl"
+                disabled={!layer.product}
+                type="number"
                 min={layer.min}
                 max={layer.max}
                 step="0.01"
                 value={layer.thickness}
-                onChange={(e) => onChange(layer.id, 'thickness', parseFloat(e.target.value))}
-                className="mt-1 w-full"
+                onChange={handleThicknessChange}
+                onBlur={() => {
+                  const thickness = Math.max(
+                    layer.min,
+                    Math.min(layer.max, layer.thickness)
+                  );
+                  onChange(layer.id, "thickness", thickness);
+                }}
+                className="mt-1 w-full p-2 border rounded border-gray-300"
               />
             </div>
           </div>
@@ -181,7 +318,11 @@ const LayerItem: React.FC<LayerItemProps> = ({
 
 interface LayerListProps {
   layers: LayerType[];
-  onLayerChange: (id: string, field: keyof LayerType, value: string | number) => void;
+  onLayerChange: (
+    id: string,
+    field: keyof LayerType,
+    value: string | number
+  ) => void;
   onAddLayer: () => void;
   onRemoveLayer: (id: string) => void;
   onReorderLayers: (startIndex: number, endIndex: number) => void;
@@ -198,39 +339,58 @@ const LayerList: React.FC<LayerListProps> = ({
   onRemoveLayer,
   onReorderLayers,
   setItems,
-  items,
   expandedLayers,
-  toggleLayerExpansion
+  toggleLayerExpansion,
 }) => {
   const moveLayer = (dragIndex: number, hoverIndex: number) => {
     onReorderLayers(dragIndex, hoverIndex);
   };
 
-  const updateItems = useCallback((updatedLayer: LayerType) => {
-    const newItem = getItem(updatedLayer.material, updatedLayer.manufacturer, updatedLayer.product);
-    if (newItem) {
-      setItems((prevItems: item[]) => {
-        const updatedItems = prevItems.map(item => 
-          item.id === updatedLayer.id 
-            ? { ...newItem, thickness: updatedLayer.thickness, id: updatedLayer.id }
-            : item
+  const updateItems = useCallback(
+    (updatedLayer: LayerType) => {
+      const newItem = getItem(
+        updatedLayer.material,
+        updatedLayer.manufacturer,
+        updatedLayer.product
+      );
+      if (newItem) {
+        setItems((prevItems: item[]) => {
+          const updatedItems = prevItems.map((item) =>
+            item.id === updatedLayer.id
+              ? {
+                  ...newItem,
+                  thickness: updatedLayer.thickness,
+                  id: updatedLayer.id,
+                }
+              : item
+          );
+
+          if (!updatedItems.some((item) => item.id === updatedLayer.id)) {
+            updatedItems.push({
+              ...newItem,
+              thickness: updatedLayer.thickness,
+              id: updatedLayer.id,
+            });
+          }
+
+          return updatedItems;
+        });
+      } else {
+        setItems((prevItems: item[]) =>
+          prevItems.filter((item) => item.id !== updatedLayer.id)
         );
+      }
+    },
+    [setItems]
+  );
 
-        if (!updatedItems.some(item => item.id === updatedLayer.id)) {
-          updatedItems.push({ ...newItem, thickness: updatedLayer.thickness, id: updatedLayer.id });
-        }
-
-        return updatedItems;
-      });
-    } else {
-      // If the item doesn't exist (e.g., incomplete selection), remove it from the items array
-      setItems((prevItems: item[]) => prevItems.filter(item => item.id !== updatedLayer.id));
-    }
-  }, [setItems]);
-
-  const handleLayerChange = (id: string, field: keyof LayerType, value: string | number) => {
+  const handleLayerChange = (
+    id: string,
+    field: keyof LayerType,
+    value: string | number
+  ) => {
     onLayerChange(id, field, value);
-    const updatedLayer = layers.find(layer => layer.id === id);
+    const updatedLayer = layers.find((layer) => layer.id === id);
     if (updatedLayer) {
       updateItems({ ...updatedLayer, [field]: value });
     }
@@ -238,8 +398,7 @@ const LayerList: React.FC<LayerListProps> = ({
 
   const handleLayerRemove = (id: string) => {
     onRemoveLayer(id);
-    // Remove the corresponding item from the algorithm results
-    setItems((prevItems: item[]) => prevItems.filter(item => item.id !== id));
+    setItems((prevItems: item[]) => prevItems.filter((item) => item.id !== id));
   };
 
   return (
