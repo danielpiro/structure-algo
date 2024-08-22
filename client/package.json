@@ -6,6 +6,7 @@
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
     "@google-cloud/translate": "^8.4.0",
+    "@headlessui/react": "^2.1.2",
     "@react-three/drei": "^9.110.0",
     "@react-three/fiber": "^8.17.5",
     "@testing-library/jest-dom": "^5.17.0",

@@ -28,7 +28,7 @@ export const useWallDesigner = () => {
       material: "סוג חומר",
       manufacturer: "יצרן",
       product: "סוג מוצר",
-      thickness: 1,
+      thickness: 0.1,
       min: 1,
       max: 10,
       thermal: 0.1,
