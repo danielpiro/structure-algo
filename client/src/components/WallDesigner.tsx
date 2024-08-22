@@ -1,11 +1,11 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import WallModel from './WallModel';
 import { useWallDesigner } from '../hooks/useWallDesigner';
-import { item } from '../data/Materials';
+import { getItem, item } from '../data/Materials';
 import { LayerType } from '../types';
 import { LayerList } from './LayerList';
 
@@ -21,6 +21,7 @@ export const WallDesigner: React.FC = () => {
   const [items, setItems] = useState<item[]>([]);
   const [selectedLayer, setSelectedLayer] = useState<LayerType | null>(null);
   const [expandedLayers, setExpandedLayers] = useState<string[]>([]);
+  const [selectedLayerDetails, setSelectedLayerDetails] = useState<item | null>(null);
 
   const renderAlgorithmResults = () => {
     const totalRValue = calculateTotalRValue(items);
@@ -36,7 +37,7 @@ export const WallDesigner: React.FC = () => {
               {items.map((item, index) => (
                 <div key={`${item.product}-${index}`} className="mb-4 p-3 bg-white rounded shadow">
                   <p><span className="font-medium">Product:</span> {item.product}</p>
-                  <p><span className="font-medium">Thickness:</span> {item.thickness?.toFixed(2)} cm</p>
+                  <p><span className="font-medium">Thickness:</span> {item.thickness?.toFixed(3)} cm</p>
                   <p><span className="font-medium">Thermal Conductivity:</span> {item.thermalConductivity.toFixed(3)} W/(m·K)</p>
                 </div>
               ))}
@@ -45,7 +46,7 @@ export const WallDesigner: React.FC = () => {
           <div>
             <h3 className="text-lg font-semibold mb-2">Total R-Value:</h3>
             <div className={`text-4xl font-bold ${isGoodRValue ? 'text-green-600' : 'text-red-600'}`}>
-              {totalRValue.toFixed(2)} m²·K/W
+              {totalRValue.toFixed(3)} m²·K/W
             </div>
             <p className="mt-2">
               {isGoodRValue 
@@ -91,6 +92,15 @@ export const WallDesigner: React.FC = () => {
     );
   }, []);
 
+  useEffect(() => {
+    if (selectedLayer) {
+      const details = getItem(selectedLayer.material, selectedLayer.manufacturer, selectedLayer.product);
+      setSelectedLayerDetails(details || null);
+    } else {
+      setSelectedLayerDetails(null);
+    }
+  }, [selectedLayer]);
+
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="min-h-screen bg-gray-100 py-8">
@@ -112,14 +122,15 @@ export const WallDesigner: React.FC = () => {
                     <OrbitControls enableRotate={true} />
                   </Canvas>
                 </div>
-                {selectedLayer && (
+                {selectedLayer && selectedLayerDetails && (
                   <div className="mt-4 p-4 bg-gray-100 rounded-md">
                     <h3 className="font-semibold text-lg mb-2">Layer Details</h3>
-                    <p><span className="font-medium">Material:</span> {selectedLayer.material}</p>
-                    <p><span className="font-medium">Manufacturer:</span> {selectedLayer.manufacturer}</p>
-                    <p><span className="font-medium">Product:</span> {selectedLayer.product}</p>
-                    <p><span className="font-medium">Thickness:</span> {selectedLayer.thickness.toFixed(2)} cm</p>
-                    <p><span className="font-medium">Thermal Conductivity:</span> {selectedLayer.thermal.toFixed(3)} W/(m·K)</p>
+                    <p><span className="font-medium">Material:</span> {selectedLayerDetails.material}</p>
+                    <p><span className="font-medium">Manufacturer:</span> {selectedLayerDetails.manufacturer}</p>
+                    <p><span className="font-medium">Product:</span> {selectedLayerDetails.product}</p>
+                    <p><span className="font-medium">Thickness:</span> {selectedLayer.thickness.toFixed(3)} cm</p>
+                    <p><span className="font-medium">Thermal Conductivity:</span> {selectedLayerDetails.thermalConductivity.toFixed(3)} W/(m·K)</p>
+                    <p><span className="font-medium">Mass:</span> {selectedLayerDetails.specificMass} kg/m³</p>
                     <p><span className="font-medium">Color:</span> <span style={{ backgroundColor: selectedLayer.color, padding: '0 10px', borderRadius: '4px' }}>{selectedLayer.color}</span></p>
                   </div>
                 )}
