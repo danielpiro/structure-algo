@@ -52,6 +52,10 @@ export const WallDesigner: React.FC = () => {
                     <span className="font-medium">Thermal Conductivity:</span>{" "}
                     {item.thermalConductivity.toFixed(3)} W/(m·K)
                   </p>
+                  <p>
+                    <span className="font-medium">Mass:</span>{" "}
+                    {item.specificMass.toFixed(3)} kg/m³
+                  </p>
                 </div>
               ))}
             </div>
@@ -137,7 +141,7 @@ export const WallDesigner: React.FC = () => {
                 3D Model Visualization
               </h2>
               <div className="p-6">
-                <div className="h-[calc(50vh-300px)] w-full">
+                <div className="h-[calc(75vh-300px)] w-full">
                   <Canvas camera={{ position: [0, 0, 450], fov: 60 }}>
                     <ambientLight intensity={0.5} />
                     <pointLight position={[10, 10, 10]} />

@@ -29,11 +29,11 @@ export const useWallDesigner = () => {
       manufacturer: "",
       product: "",
       thickness: 0,
-      min: 1,
-      max: 10,
+      min: 0,
+      max: 5,
       thermal: 0.1,
       mass: 1,
-      color: "#" + Math.floor(Math.random() * 16777215).toString(16),
+      color: "#ffffff",
     };
     setModelDetails((prevDetails) => ({
       ...prevDetails,

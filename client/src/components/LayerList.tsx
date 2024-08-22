@@ -118,7 +118,6 @@ const LayerItem: React.FC<LayerItemProps> = ({
   const handleThicknessChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
 
-    // Allow empty input for user to start typing
     if (value === "") {
       onChange(layer.id, "thickness", layer.min);
       return;
@@ -126,7 +125,6 @@ const LayerItem: React.FC<LayerItemProps> = ({
 
     let thickness = Number(value);
 
-    // Constrain the value within min and max
     if (!isNaN(thickness)) {
       thickness = Math.max(layer.min, Math.min(layer.max, thickness));
       onChange(layer.id, "thickness", thickness);
@@ -147,6 +145,21 @@ const LayerItem: React.FC<LayerItemProps> = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    if (layer.product && layer.material && layer.manufacturer) {
+      const newItem = getItem(
+        layer.material,
+        layer.manufacturer,
+        layer.product
+      );
+      if (newItem) {
+        onChange(layer.id, "min", newItem.min);
+        onChange(layer.id, "max", newItem.max);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [layer.manufacturer, layer.material, layer.product]);
 
   const ColorPicker = () => (
     <div className="relative" ref={colorPickerRef}>
@@ -294,18 +307,19 @@ const LayerItem: React.FC<LayerItemProps> = ({
                 dir="rtl"
                 disabled={!layer.product}
                 type="number"
-                min={layer.min}
-                max={layer.max}
+                min={layer.min ?? 0}
+                max={layer.max ?? 10}
                 step="0.01"
+                placeholder={`בין ${layer.min} ל-${layer.max}`}
                 value={layer.thickness}
                 onChange={handleThicknessChange}
-                onBlur={() => {
-                  const thickness = Math.max(
-                    layer.min,
-                    Math.min(layer.max, layer.thickness)
-                  );
-                  onChange(layer.id, "thickness", thickness);
-                }}
+                onBlur={() =>
+                  onChange(
+                    layer.id,
+                    "thickness",
+                    Math.max(layer.min, Math.min(layer.max, layer.thickness))
+                  )
+                }
                 className="mt-1 w-full p-2 border rounded border-gray-300"
               />
             </div>

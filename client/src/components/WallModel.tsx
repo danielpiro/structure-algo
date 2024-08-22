@@ -8,25 +8,22 @@ interface WallModelProps {
   selectedLayerId: string | undefined;
 }
 
-const WallModel: React.FC<WallModelProps> = ({
-  layers,
-  onLayerClick,
-  selectedLayerId,
-}) => {
+const WallModel: React.FC<WallModelProps> = ({ layers, onLayerClick }) => {
   const wallWidth = 300;
   const wallHeight = 200;
+  const defaultLayerThickness = 1;
   const maxWallThickness = 50; // Maximum thickness of the wall
 
   const { scaledLayers, totalThickness } = useMemo(() => {
     const totalThickness = layers.reduce(
-      (sum, layer) => sum + layer.thickness,
+      (sum, layer) => sum + layer.thickness || defaultLayerThickness,
       0
     );
     const scale = maxWallThickness / totalThickness;
 
     const scaledLayers = layers.map((layer) => ({
       ...layer,
-      scaledThickness: layer.thickness * scale,
+      scaledThickness: (layer.thickness || defaultLayerThickness) * scale,
     }));
     return { scaledLayers, totalThickness: maxWallThickness };
   }, [layers]);
