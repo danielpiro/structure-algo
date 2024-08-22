@@ -247,7 +247,7 @@ const LayerList: React.FC<LayerListProps> = ({
       <h2 className="text-2xl font-semibold text-center mb-4">Layer Details</h2>
       <button
         onClick={onAddLayer}
-        className="w-full py-3 px-4 bg-gradient-to-r from-green-400 to-blue-500 text-white rounded-md hover:from-green-500 hover:to-blue-600 transition-colors duration-300 flex items-center justify-center shadow-md mb-4"
+        className="w-full py-3 px-4 bg-gradient-to-r bg-purple-600 text-white rounded-m transition-colors duration-300 flex items-center justify-center shadow-md mb-4"
       >
         <FaPlus className="mr-2" /> Add Layer
       </button>
