@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { LayerType, ModelType, ModelDetails } from "../types";
 
@@ -6,7 +6,9 @@ export const useWallDesigner = () => {
   const [selectedModel] = useState<ModelType>("Wall");
   const [modelDetails, setModelDetails] = useState<
     Record<ModelType, ModelDetails>
-  >({ Wall: { layers: [] } });
+  >({
+    Wall: { layers: [] },
+  });
 
   const handleLayerChange = useCallback(
     (layerId: string, field: keyof LayerType, value: string | number) => {
@@ -33,7 +35,7 @@ export const useWallDesigner = () => {
       max: 5,
       thermal: 0.1,
       mass: 1,
-      color: "#ffffff",
+      color: "blue",
     };
     setModelDetails((prevDetails) => ({
       ...prevDetails,
@@ -76,12 +78,31 @@ export const useWallDesigner = () => {
     [selectedModel]
   );
 
+  const updateLayers = useCallback(
+    (newLayers: LayerType[]) => {
+      setModelDetails((prevDetails) => ({
+        ...prevDetails,
+        [selectedModel]: {
+          ...prevDetails[selectedModel],
+          layers: newLayers,
+        },
+      }));
+    },
+    [selectedModel]
+  );
+
+  const currentLayers = useMemo(
+    () => modelDetails[selectedModel].layers,
+    [modelDetails, selectedModel]
+  );
+
   return {
     selectedModel,
-    modelDetails,
+    layers: currentLayers,
     handleLayerChange,
     handleAddLayer,
     handleRemoveLayer,
     handleSwapLayers,
+    updateLayers,
   };
 };
