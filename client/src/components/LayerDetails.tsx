@@ -37,7 +37,7 @@ const LayerDetails: React.FC<LayerDetailsProps> = React.memo(({ layer }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {details.map(({ label, value }) => (
           <div key={label} className="mb-2">
-            <span className="font-medium text-gray-700">{t("label")}:</span>{" "}
+            <span className="font-medium text-gray-700">{label}:</span>{" "}
             <span className="text-gray-800">{value}</span>
           </div>
         ))}
