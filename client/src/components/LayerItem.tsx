@@ -137,19 +137,15 @@ const LayerItem: React.FC<LayerItemProps> = React.memo(
           isDragging ? "opacity-50" : ""
         } ${isExpanded ? "bg-white" : "bg-gray-50 hover:bg-gray-100"}`}
       >
-        <div
-          className="flex justify-between items-center p-4 cursor-pointer"
-          onClick={toggleExpansion}
-        >
+        <div className="flex justify-between items-center p-4 cursor-pointer">
           <div className="flex items-center">
             <span
               ref={drag}
-              className="cursor-move mr-3 text-gray-400 hover:text-gray-600"
+              className="cursor-move text-gray-400 hover:text-gray-600"
             >
               <FaGripVertical />
             </span>
-            <h3 className="font-semibold text-lg text-gray-800">
-              {" "}
+            <h3 className="font-semibold text-lg text-gray-800 mr-2">
               {layer.material || t("Not selected")}
             </h3>
           </div>
@@ -163,26 +159,26 @@ const LayerItem: React.FC<LayerItemProps> = React.memo(
                 e.stopPropagation();
                 onRemove(layer.id);
               }}
-              className="text-red-500 hover:text-red-700 transition-colors duration-200"
+              className="text-red-500 hover:text-red-700 transition-colors duration-200 ml-2"
             >
               <FaTrash />
             </button>
-            <div className="text-gray-400">
+            <div className="text-gray-400 mr-2" onClick={toggleExpansion}>
               {isExpanded ? <FaChevronUp /> : <FaChevronDown />}
             </div>
           </div>
         </div>
         {isExpanded && (
           <div className="p-4 border-t border-gray-200">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-lg font-medium text-gray-700 mb-1">
                   {t("Material")}
                 </label>
-
                 <Select
                   isRtl={true}
                   options={materialOptions}
+                  placeholder={t("Select material")}
                   value={
                     layer.material
                       ? { value: layer.material, label: layer.material }
@@ -191,15 +187,18 @@ const LayerItem: React.FC<LayerItemProps> = React.memo(
                   onChange={handleTypeChange}
                   className="basic-single"
                   classNamePrefix="select"
+                  menuPortalTarget={document.body}
+                  styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-lg font-medium text-gray-700 mb-1">
                   {t("Manufacturer")}
                 </label>
                 <Select
                   isRtl={true}
                   isDisabled={!layer.material}
+                  placeholder={t("Select manufacturer")}
                   options={manufacturerOptions}
                   value={
                     layer.manufacturer
@@ -209,16 +208,19 @@ const LayerItem: React.FC<LayerItemProps> = React.memo(
                   onChange={handleManufacturerChange}
                   className="basic-single"
                   classNamePrefix="select"
+                  menuPortalTarget={document.body}
+                  styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-lg font-medium text-gray-700 mb-1">
                   {t("Product")}
                 </label>
                 <Select
                   isRtl={true}
                   isDisabled={!layer.material || !layer.manufacturer}
                   options={productOptions}
+                  placeholder={t("Select product")}
                   value={
                     layer.product
                       ? { value: layer.product, label: layer.product }
@@ -229,18 +231,20 @@ const LayerItem: React.FC<LayerItemProps> = React.memo(
                   }
                   className="basic-single"
                   classNamePrefix="select"
+                  menuPortalTarget={document.body}
+                  styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t("Thickness")} (cm)
-                </label>
+              <label className="text-lg font-medium text-gray-700 whitespace-nowrap">
+                {t("Thickness")} ({t("cm")})
+              </label>
+              <div className="flex items-center space-x-4">
                 {layer.min === layer.max ? (
                   <input
                     type="number"
                     value={layer.thickness}
                     disabled
-                    className="mt-1 block w-64 p-2 border border-gray-300 rounded-md bg-gray-100 text-gray-500"
+                    className="w-full p-2 border border-gray-300 rounded-md bg-gray-100 text-gray-500"
                   />
                 ) : (
                   <input
@@ -261,7 +265,7 @@ const LayerItem: React.FC<LayerItemProps> = React.memo(
                         )
                       )
                     }
-                    className="mt-1 w-64 block p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
                   />
                 )}
               </div>

@@ -40,7 +40,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
 
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-700 mb-2">
+      <label className="block text-lg font-medium text-green-700 mb-2">
         {label}
       </label>
       <Select<SelectOption>
@@ -48,7 +48,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
         value={{ value, label: value }}
         onChange={(option) => onChange(option?.value || "")}
         isRtl={true}
-        className="text-sm"
+        className="text-lg"
         styles={customStyles}
       />
     </div>

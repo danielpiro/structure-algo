@@ -37,5 +37,10 @@
   "label": "תווית",
   "Not selected": "לא נבחר",
   "No layers added. Click 'Add Layer' to get started.": "לא הוספו שכבות. לחץ על 'הוסף שכבה' כדי להתחיל.",
-  "Wall Designer": "עיצוב קיר"
+  "Wall Designer": "עיצוב קיר",
+  "Select material": "בחר חומר",
+  "Select manufacturer": "בחר יצרן",
+  "Select color": "בחר צבע",
+  "Select isolation type": "בחר סוג בידוד",
+  "Select product": "בחר מוצר"
 }

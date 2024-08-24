@@ -70,7 +70,7 @@ const ColorPicker: React.FC<ColorPickerProps> = React.memo(
         </button>
         {isOpen && (
           <div
-            className="absolute z-10 right-0 mt-2 p-2 bg-white rounded-md shadow-lg"
+            className="absolute z-10 left-0 mt-2 p-2 bg-white rounded-md shadow-lg"
             style={{ width: "200px" }}
           >
             <div className="grid grid-cols-6 gap-1">

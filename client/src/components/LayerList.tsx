@@ -69,7 +69,7 @@ const LayerList: React.FC<LayerListProps> = React.memo(
     );
 
     return (
-      <div className="bg-white rounded-lg shadow-md p-6">
+      <div className="bg-white rounded-lg shadow-md">
         <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
           {t("Layer Details")}
         </h2>
