@@ -235,7 +235,7 @@ const LayerItem: React.FC<LayerItemProps> = React.memo(
                   styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
                 />
               </div>
-              <label className="text-lg font-medium text-gray-700 whitespace-nowrap">
+              <label className="block text-lg font-medium text-gray-700">
                 {t("Thickness")} ({t("cm")})
               </label>
               <div className="flex items-center space-x-4">
@@ -253,6 +253,7 @@ const LayerItem: React.FC<LayerItemProps> = React.memo(
                     min={layer.min ?? 0}
                     max={layer.max ?? 10}
                     step="0.01"
+                    defaultValue={layer.min}
                     value={layer.thickness}
                     onChange={handleThicknessChange}
                     onBlur={() =>
