@@ -93,23 +93,6 @@ const LayerItem: React.FC<LayerItemProps> = React.memo(
       [layer.id, layer.min, layer.max, onChange]
     );
 
-    useEffect(() => {
-      if (layer.product && layer.material && layer.manufacturer) {
-        const newItem = getItem(
-          layer.material,
-          layer.manufacturer,
-          layer.product
-        );
-        if (newItem) {
-          onChange(layer.id, "min", newItem.min);
-          onChange(layer.id, "max", newItem.max);
-          if (newItem.min === newItem.max) {
-            onChange(layer.id, "thickness", newItem.min);
-          }
-        }
-      }
-    }, [layer.manufacturer, layer.material, layer.product, layer.id, onChange]);
-
     const materialOptions = useMemo(
       () => materials.map((value) => ({ value, label: value })),
       []
@@ -129,6 +112,24 @@ const LayerItem: React.FC<LayerItemProps> = React.memo(
         })),
       [layer.material, layer.manufacturer]
     );
+
+    useEffect(() => {
+      if (layer.product && layer.material && layer.manufacturer) {
+        const newItem = getItem(
+          layer.material,
+          layer.manufacturer,
+          layer.product
+        );
+        if (newItem) {
+          onChange(layer.id, "min", newItem.min);
+          onChange(layer.id, "max", newItem.max);
+          onChange(layer.id, "thickness", newItem.min);
+          if (newItem.min === newItem.max) {
+            onChange(layer.id, "thickness", newItem.min);
+          }
+        }
+      }
+    }, [layer.manufacturer, layer.material, layer.product, layer.id, onChange]);
 
     return (
       <div
@@ -253,7 +254,6 @@ const LayerItem: React.FC<LayerItemProps> = React.memo(
                     min={layer.min ?? 0}
                     max={layer.max ?? 10}
                     step="0.01"
-                    defaultValue={layer.min}
                     value={layer.thickness}
                     onChange={handleThicknessChange}
                     onBlur={() =>

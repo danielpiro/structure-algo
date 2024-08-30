@@ -203,19 +203,13 @@ const AlgorithmResults: React.FC<AlgorithmResultsProps> = React.memo(
         throw new Error(`Invalid project location: ${projectLocation}`);
       }
 
-      // Find the appropriate mass range
       let baseResistance: number;
 
       if (mass >= masses[0]) {
-        // If mass is greater than or equal to the maximum mass in the table,
-        // use the resistance value for the maximum mass
         baseResistance = locationValues[0];
       } else if (mass <= masses[masses.length - 1]) {
-        // If mass is less than or equal to the minimum mass in the table,
-        // use the resistance value for the minimum mass
         baseResistance = locationValues[locationValues.length - 1];
       } else {
-        // Find the two masses that the input mass falls between
         const lowerIndex = masses.findIndex((m) => m <= mass);
         const upperIndex = lowerIndex - 1;
 
@@ -224,7 +218,6 @@ const AlgorithmResults: React.FC<AlgorithmResultsProps> = React.memo(
         const lowerResistance = locationValues[lowerIndex];
         const upperResistance = locationValues[upperIndex];
 
-        // Perform linear interpolation
         baseResistance = linearInterpolate(
           mass,
           lowerMass,
@@ -234,7 +227,6 @@ const AlgorithmResults: React.FC<AlgorithmResultsProps> = React.memo(
         );
       }
 
-      // Apply additional resistance based on wall color and project specifics
       if (wallColor === "גוון כהה") {
         if (projectType === "מגורים") {
           if (elementType === "קיר חוץ") {
