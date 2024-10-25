@@ -18,15 +18,15 @@ const LayerDetails: React.FC<LayerDetailsProps> = React.memo(({ layer }) => {
   if (!itemDetails) return null;
 
   const details = [
-    { label: "Material", value: itemDetails.material },
-    { label: "Manufacturer", value: itemDetails.manufacturer },
-    { label: "Product", value: itemDetails.product },
-    { label: "Thickness", value: `${layer.thickness.toFixed(3)} cm` },
+    { label: t("Material"), value: itemDetails.material },
+    { label: t("Manufacturer"), value: itemDetails.manufacturer },
+    { label: t("Product"), value: itemDetails.product },
+    { label: t("Thickness"), value: `${layer.thickness.toFixed(3)} ס"מ` },
     {
-      label: "Thermal Conductivity",
+      label: t("Thermal Conductivity"),
       value: `${itemDetails.thermalConductivity.toFixed(3)} W/(m·K)`,
     },
-    { label: "Mass", value: `${itemDetails.specificMass} kg/m³` },
+    { label: t("Mass"), value: `${itemDetails.specificMass} kg/m³` },
   ];
 
   return (

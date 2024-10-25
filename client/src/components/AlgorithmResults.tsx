@@ -275,7 +275,7 @@ const AlgorithmResults: React.FC<AlgorithmResultsProps> = React.memo(
         setIsInsulationSufficient(null);
         setRequiredResistance(null);
         setCalculationError(
-          "Please select all parameters and add at least one item."
+          t("Please select all parameters and add at least one item.")
         );
       }
     }, [
@@ -295,12 +295,10 @@ const AlgorithmResults: React.FC<AlgorithmResultsProps> = React.memo(
           {t("Algorithm Results")}
         </h2>
         <p className="text-lg mb-2">
-          Calculated Thermal Resistance:{" "}
+         {t("Calculated Thermal Resistance")}
           <span className="font-semibold text-blue-600">
-            {calculatedResistance !== null
-              ? calculatedResistance.toFixed(3)
-              : "N/A"}{" "}
-            m²·K/W
+            {calculatedResistance ? calculatedResistance.toFixed(3) : "N/A"}{" "}
+            m²·K/W  
           </span>
         </p>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -311,15 +309,15 @@ const AlgorithmResults: React.FC<AlgorithmResultsProps> = React.memo(
               </h3>
               <div className="bg-gray-50 p-5 rounded-md shadow-inner">
                 {calculationError ? (
-                  <p className="text-red-600">Error: {calculationError}</p>
+                  <p className="text-red-600">{calculationError}</p>
                 ) : isInsulationSufficient === null ? (
                   <p className="text-yellow-600">
-                    Waiting for all parameters to be set...
+                   {t('Waiting for all parameters to be set')}...
                   </p>
                 ) : (
                   <>
                     <p className="text-2xl font-bold mb-2">
-                      Total Thermal Resistance:{" "}
+                    {t('Total Thermal Resistance')}:{" "}
                       <span
                         className={
                           isInsulationSufficient
@@ -331,7 +329,7 @@ const AlgorithmResults: React.FC<AlgorithmResultsProps> = React.memo(
                       </span>
                     </p>
                     <p className="text-lg mb-2">
-                      Required Thermal Resistance:{" "}
+                    {t('Required Thermal Resistance')}:{" "}
                       <span className="font-semibold">
                         {requiredResistance !== null
                           ? requiredResistance.toFixed(3)
@@ -351,19 +349,19 @@ const AlgorithmResults: React.FC<AlgorithmResultsProps> = React.memo(
                         : "Consider adding more insulation to meet the required standards."}
                     </p>
                     <p className="mt-2">
-                      Total R-Value:{" "}
+                    {t('Total R-Value')}:
                       <span className="font-semibold">
                         {R.toFixed(3)} m²·K/W
                       </span>
                     </p>
                     <p className="mt-2">
-                      U-Value:{" "}
+                    {t('U-Value')}:
                       <span className="font-semibold">
                         {U.toFixed(3)} W/(m²·K)
                       </span>
                     </p>
                     <p>
-                      Total Mass:{" "}
+                      {t('Total Mass')}:
                       <span className="font-semibold">
                         {mass.toFixed(2)} kg/m²
                       </span>
@@ -378,33 +376,33 @@ const AlgorithmResults: React.FC<AlgorithmResultsProps> = React.memo(
               </h3>
               <div className="bg-gray-50 p-5 rounded-md shadow-inner">
                 <p>
-                  Project Type:{" "}
+                  {t('Project Type')}:{" "}
                   <span className="font-semibold">
-                    {projectType || "Not set"}
+                    {projectType || "לא נקבע"}
                   </span>
                 </p>
                 <p>
-                  Project Location:{" "}
+                {t('Project Location')}:{" "}
                   <span className="font-semibold">
-                    {projectLocation || "Not set"}
+                    {projectLocation || "לא נקבע"}
                   </span>
                 </p>
                 <p>
-                  Model Type:{" "}
+                {t('Model Type')}:{" "}
                   <span className="font-semibold">
-                    {modelType || "Not set"}
+                    {modelType || "לא נקבע"}
                   </span>
                 </p>
                 <p>
-                  Isolation Type:{" "}
+                {t('Isolation Type')}:{" "}
                   <span className="font-semibold">
-                    {isolationType || "Not set"}
+                    {isolationType || "לא נקבע"}
                   </span>
                 </p>
                 <p>
-                  Wall Color:{" "}
+                {t('Wall Color')}:{" "}
                   <span className="font-semibold">
-                    {wallColor || "Not set"}
+                    {wallColor || "לא נקבע"}
                   </span>
                 </p>
               </div>
@@ -416,7 +414,7 @@ const AlgorithmResults: React.FC<AlgorithmResultsProps> = React.memo(
             </h3>
             <div className="max-h-96 overflow-y-auto bg-gray-50 p-5 rounded-md shadow-inner">
               {items.length === 0 ? (
-                <p className="text-yellow-600">No items added yet.</p>
+                <p className="text-yellow-600">{t('No items added yet.')}</p>
               ) : (
                 items.map((item, index) => (
                   <div
@@ -425,13 +423,13 @@ const AlgorithmResults: React.FC<AlgorithmResultsProps> = React.memo(
                   >
                     <p>
                       <span className="font-medium text-gray-600">
-                        Product:
+                      {t('Product')}:
                       </span>{" "}
                       <span className="text-gray-800">{item.product}</span>
                     </p>
                     <p>
                       <span className="font-medium text-gray-600">
-                        Thickness:
+                      {t('Thickness')}:
                       </span>{" "}
                       <span className="text-gray-800">
                         {item.thickness?.toFixed(3)} cm
@@ -439,7 +437,7 @@ const AlgorithmResults: React.FC<AlgorithmResultsProps> = React.memo(
                     </p>
                     <p>
                       <span className="font-medium text-gray-600">
-                        Thermal Conductivity:
+                      {t('Thermal Conductivity')}:
                       </span>{" "}
                       <span className="text-gray-800">
                         {item.thermalConductivity.toFixed(3)} W/(m·K)

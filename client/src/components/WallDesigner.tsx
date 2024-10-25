@@ -1,19 +1,17 @@
-import React, { useCallback, useEffect, useState, useMemo } from "react";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import WallModel from "./WallModel";
-import { useWallDesigner } from "../hooks/useWallDesigner";
-import { getItem } from "../data/Materials";
-import { LayerType, Model } from "../types";
-import LayerList from "./LayerList";
-import SavedModelsManager from "./SavedModelsManager";
-import AlgorithmResults from "./AlgorithmResults";
-import ProjectSettings from "./ProjectSettings";
-import LayerDetails from "./LayerDetails";
-import useTranslations from "../hooks/useTranslations";
-import SelectField from "./SelectField";
+import React, { useCallback, useEffect, useState, useMemo } from 'react';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls } from '@react-three/drei';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import WallModel from './WallModel';
+import { useWallDesigner } from '../hooks/useWallDesigner';
+import { getItem } from '../data/Materials';
+import { LayerType, Model } from '../types';
+import LayerList from './LayerList';
+import SettingsMenu from './SettingsMenu';
+import AlgorithmResults from './AlgorithmResults';
+import LayerDetails from './LayerDetails';
+import useTranslations from '../hooks/useTranslations';
 
 export const WallDesigner: React.FC = () => {
   const {
@@ -28,16 +26,13 @@ export const WallDesigner: React.FC = () => {
   const [items, setItems] = useState<Model[]>([]);
   const [selectedLayer, setSelectedLayer] = useState<LayerType | null>(null);
   const [expandedLayers, setExpandedLayers] = useState<string[]>([]);
-  const [savedModels, setSavedModels] = useState<{
-    [key: string]: LayerType[];
-  }>({});
+  const [savedModels, setSavedModels] = useState<{[key: string]: LayerType[]}>({});
 
-  const [projectType, setProjectType] = useState("");
-  const [projectLocation, setProjectLocation] = useState("");
-
-  const [modelType, setModelType] = useState("");
-  const [isolationType, setIsolationType] = useState("");
-  const [wallColor, setWallColor] = useState("");
+  const [projectType, setProjectType] = useState<string>('');
+  const [projectLocation, setProjectLocation] = useState<string>('');
+  const [modelType, setModelType] = useState<string>('');
+  const [isolationType, setIsolationType] = useState<string>('');
+  const [wallColor, setWallColor] = useState<string>('');
 
   const { t } = useTranslations();
 
@@ -67,9 +62,9 @@ export const WallDesigner: React.FC = () => {
         [modelName]: layers,
       }));
       updateLayers([]);
-      setModelType("");
-      setIsolationType("");
-      setWallColor("");
+      setModelType('');
+      setIsolationType('');
+      setWallColor('');
     },
     [layers, updateLayers]
   );
@@ -147,49 +142,24 @@ export const WallDesigner: React.FC = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="min-h-screen bg-gradient-to-b from-gray-100 to-gray-200 py-10">
+      <div className="min-h-screen py-10">
+        <SettingsMenu
+          projectType={projectType}
+          projectLocation={projectLocation}
+          onProjectTypeChange={setProjectType}
+          onProjectLocationChange={setProjectLocation}
+          modelType={modelType}
+          isolationType={isolationType}
+          wallColor={wallColor}
+          onModelTypeChange={setModelType}
+          onIsolationTypeChange={setIsolationType}
+          onWallColorChange={setWallColor}
+          savedModels={savedModels}
+          onSaveModel={saveCurrentModel}
+          onLoadModel={loadSavedModel}
+        />
+        
         <div className="container mx-auto px-4 space-y-10">
-          <ProjectSettings
-            projectType={projectType}
-            projectLocation={projectLocation}
-            onProjectTypeChange={setProjectType}
-            onProjectLocationChange={setProjectLocation}
-          />
-
-          <div className="mt-10 bg-gradient-to-r from-green-50 to-green-50 p-8 rounded-xl shadow-lg">
-            <h2 className="text-3xl font-semibold mb-6 text-gray-700">
-              {t("Model Settings")}
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <SelectField
-                label={t("Model Type")}
-                options={["קיר חוץ", "קיר הפרדה", "גג עליון"]}
-                value={modelType}
-                onChange={setModelType}
-              />
-              <SelectField
-                label={t("Isolation Type")}
-                options={["בידוד חוץ", "בידוד פנים"]}
-                value={isolationType}
-                onChange={setIsolationType}
-              />
-              {modelType === "קיר חוץ" && (
-                <SelectField
-                  label={t("Wall Color")}
-                  options={["גוון בהיר", "גוון כהה"]}
-                  value={wallColor}
-                  onChange={setWallColor}
-                />
-              )}
-            </div>
-          </div>
-
-          <SavedModelsManager
-            savedModels={savedModels}
-            onSaveModel={saveCurrentModel}
-            onLoadModel={loadSavedModel}
-          />
-
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
             <div className="bg-white rounded-xl shadow-lg overflow-hidden">
               <div className="p-8">{memoizedLayerList}</div>

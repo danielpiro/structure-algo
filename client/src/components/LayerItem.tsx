@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useEffect } from "react";
+import React, { useCallback, useMemo, useEffect, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { LayerType, Model } from "../types";
 import {
@@ -57,6 +57,7 @@ const LayerItem: React.FC<LayerItemProps> = React.memo(
     });
 
     const { t } = useTranslations();
+    const [error, setError] = useState<string | null>(null);
 
     const handleTypeChange = useCallback(
       (option: { value: string; label: string } | null) => {
@@ -79,16 +80,14 @@ const LayerItem: React.FC<LayerItemProps> = React.memo(
 
     const handleThicknessChange = useCallback(
       (e: React.ChangeEvent<HTMLInputElement>) => {
-        let value = e.target.value;
-        if (value === "") {
-          onChange(layer.id, "thickness", layer.min);
+        if (e.target.value === "") {
           return;
         }
-        let thickness = Number(value);
-        if (!isNaN(thickness)) {
-          thickness = Math.max(layer.min, Math.min(layer.max, thickness));
-          onChange(layer.id, "thickness", thickness);
+        if (isNaN(Number(e.target.value))) {
+          setError(t("Invalid thickness"));
+          return;
         }
+        onChange(layer.id, "thickness", Number(e.target.value));
       },
       [layer.id, layer.min, layer.max, onChange]
     );
@@ -123,7 +122,7 @@ const LayerItem: React.FC<LayerItemProps> = React.memo(
         if (newItem) {
           onChange(layer.id, "min", newItem.min);
           onChange(layer.id, "max", newItem.max);
-          onChange(layer.id, "thickness", newItem.min);
+          onChange(layer.id, "thickness", 0);
           if (newItem.min === newItem.max) {
             onChange(layer.id, "thickness", newItem.min);
           }
@@ -251,22 +250,22 @@ const LayerItem: React.FC<LayerItemProps> = React.memo(
                   <input
                     type="number"
                     disabled={!layer.product}
-                    min={layer.min ?? 0}
-                    max={layer.max ?? 10}
                     step="0.01"
-                    value={layer.thickness}
+                    placeholder={`${layer.min} - ${layer.max} ס"מ`}
+                    value={layer.thickness !== 0 ?  layer.thickness : ""}
                     onChange={handleThicknessChange}
-                    onBlur={() =>
-                      onChange(
-                        layer.id,
-                        "thickness",
-                        Math.max(
-                          layer.min,
-                          Math.min(layer.max, layer.thickness)
-                        )
-                      )
-                    }
+                    onBlur={(e) => {
+                      if (Number(e.target.value) < layer.min) {
+                        onChange(layer.id, "thickness", layer.min);
+                        return;
+                      }
+                      if (Number(e.target.value) > layer.max) {
+                        onChange(layer.id, "thickness", layer.max);
+                        return;
+                      }
+                    }}
                     className="w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                    onError={() => setError(t("Invalid thickness"))}
                   />
                 )}
               </div>
