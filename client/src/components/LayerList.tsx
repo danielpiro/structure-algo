@@ -76,7 +76,7 @@ const LayerList: React.FC<LayerListProps> = React.memo(
         <div className="flex flex-col sm:flex-row justify-between items-center mb-6 space-y-4 sm:space-y-0 sm:space-x-4">
           <button
             onClick={onAddLayer}
-            className="w-full sm:w-auto py-2 px-6 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-md transition-all duration-300 flex items-center justify-center shadow-md hover:from-purple-700 hover:to-purple-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50"
+            className="w-full sm:w-auto py-2 px-6 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-md transition-all duration-300 flex items-center justify-center shadow-md hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50"
           >
             {t("Add Layer")} <FaPlus className="mr-2" />
           </button>

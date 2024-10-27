@@ -142,54 +142,64 @@ export const WallDesigner: React.FC = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="min-h-screen py-10">
-        <SettingsMenu
-          projectType={projectType}
-          projectLocation={projectLocation}
-          onProjectTypeChange={setProjectType}
-          onProjectLocationChange={setProjectLocation}
-          modelType={modelType}
-          isolationType={isolationType}
-          wallColor={wallColor}
-          onModelTypeChange={setModelType}
-          onIsolationTypeChange={setIsolationType}
-          onWallColorChange={setWallColor}
-          savedModels={savedModels}
-          onSaveModel={saveCurrentModel}
-          onLoadModel={loadSavedModel}
-        />
-        
-        <div className="container mx-auto px-4 space-y-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-              <div className="p-8">{memoizedLayerList}</div>
+      <div className="min-h-screen py-6 bg-gray-50" dir="rtl">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Settings Menu with new styling */}
+            <SettingsMenu
+              projectType={projectType}
+              projectLocation={projectLocation}
+              onProjectTypeChange={setProjectType}
+              onProjectLocationChange={setProjectLocation}
+              modelType={modelType}
+              isolationType={isolationType}
+              wallColor={wallColor}
+              onModelTypeChange={setModelType}
+              onIsolationTypeChange={setIsolationType}
+              onWallColorChange={setWallColor}
+              savedModels={savedModels}
+              onSaveModel={saveCurrentModel}
+              onLoadModel={loadSavedModel}
+            />
+
+          {/* Main Content Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="bg-white rounded-xl shadow-md overflow-hidden">
+                {memoizedLayerList}
             </div>
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-              <h2 className="text-2xl font-semibold p-6 bg-gray-50 border-b">
-                {t("3D Model Visualization")}
-              </h2>
-              <div className="p-6">
-                <div className="h-[calc(75vh-300px)] w-full rounded-lg overflow-hidden">
-                  <Canvas camera={{ position: [0, 0, 450], fov: 60 }}>
-                    <ambientLight intensity={0.5} />
-                    <pointLight position={[10, 10, 10]} />
-                    {memoizedWallModel}
-                    <OrbitControls enableRotate={true} />
-                  </Canvas>
-                </div>
-                {selectedLayer && <LayerDetails layer={selectedLayer} />}
+
+            {/* Left Panel (3D Visualization) */}
+            <div className="space-y-8">
+              <div className="bg-white rounded-xl shadow-md overflow-hidden">
+                  <div className="h-[500px] w-full rounded-lg overflow-hidden">
+                    <Canvas camera={{ position: [0, 0, 450], fov: 60 }}>
+                      <ambientLight intensity={0.5} />
+                      <pointLight position={[10, 10, 10]} />
+                      {memoizedWallModel}
+                      <OrbitControls enableRotate={true} />
+                    </Canvas>
+                  </div>
               </div>
+
+              {/* Layer Details Panel */}
+              {selectedLayer && (
+                <div className="bg-white rounded-xl shadow-md overflow-hidden">
+                    <LayerDetails layer={selectedLayer} />
+                </div>
+              )}
             </div>
           </div>
 
-          <AlgorithmResults
-            items={items}
-            projectType={projectType}
-            projectLocation={projectLocation}
-            modelType={modelType}
-            isolationType={isolationType}
-            wallColor={wallColor}
-          />
+          {/* Results Section */}
+          <div className="mt-8 bg-white rounded-xl shadow-md overflow-hidden">
+              <AlgorithmResults
+                items={items}
+                projectType={projectType}
+                projectLocation={projectLocation}
+                modelType={modelType}
+                isolationType={isolationType}
+                wallColor={wallColor}
+              />
+          </div>
         </div>
       </div>
     </DndProvider>

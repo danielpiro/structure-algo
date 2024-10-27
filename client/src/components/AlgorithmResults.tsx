@@ -294,13 +294,6 @@ const AlgorithmResults: React.FC<AlgorithmResultsProps> = React.memo(
         <h2 className="text-3xl font-bold mb-6 text-gray-800 border-b pb-2">
           {t("Algorithm Results")}
         </h2>
-        <p className="text-lg mb-2">
-         {t("Calculated Thermal Resistance")}
-          <span className="font-semibold text-blue-600">
-            {calculatedResistance ? calculatedResistance.toFixed(3) : "N/A"}{" "}
-            m²·K/W  
-          </span>
-        </p>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="space-y-6">
             <div>
@@ -345,27 +338,28 @@ const AlgorithmResults: React.FC<AlgorithmResultsProps> = React.memo(
                       }`}
                     >
                       {isInsulationSufficient
-                        ? "Great job! Your insulation meets or exceeds the required standards."
-                        : "Consider adding more insulation to meet the required standards."}
+                        ? "עבודה נהדרת! הבידוד שלך עומד בתקנים הנדרשים או חורג מהם."
+                        : "שקול להוסיף עוד בידוד כדי לעמוד בתקנים הנדרשים."}
                     </p>
                     <p className="mt-2">
                     {t('Total R-Value')}:
-                      <span className="font-semibold">
-                        {R.toFixed(3)} m²·K/W
+                      <span className="font-semibold" dir="rtl">
+                      {" "} {R.toFixed(3)} m²·K/W
                       </span>
                     </p>
                     <p className="mt-2">
                     {t('U-Value')}:
-                      <span className="font-semibold">
-                        {U.toFixed(3)} W/(m²·K)
+                      <span className="font-semibold" dir="rtl">
+                        {" "}{U.toFixed(3)} W/(m²·K)
                       </span>
                     </p>
                     <p>
                       {t('Total Mass')}:
-                      <span className="font-semibold">
-                        {mass.toFixed(2)} kg/m²
+                      <span className="font-semibold" dir="rtl">
+                      {" "} {mass.toFixed(2)} kg/m²
                       </span>
                     </p>
+                  
                   </>
                 )}
               </div>
@@ -407,6 +401,22 @@ const AlgorithmResults: React.FC<AlgorithmResultsProps> = React.memo(
                 </p>
               </div>
             </div>
+            <div>
+              <h3 className="text-xl font-semibold mb-3 text-gray-700">
+                {t("Fire Ressistence")}
+              </h3>
+              <div className="bg-gray-50 p-5 rounded-md shadow-inner">
+               
+              </div>
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold mb-3 text-gray-700">
+                {t("LCA")}
+              </h3>
+              <div className="bg-gray-50 p-5 rounded-md shadow-inner">
+               
+              </div>
+            </div>
           </div>
           <div>
             <h3 className="text-xl font-semibold mb-3 text-gray-700">
@@ -432,7 +442,7 @@ const AlgorithmResults: React.FC<AlgorithmResultsProps> = React.memo(
                       {t('Thickness')}:
                       </span>{" "}
                       <span className="text-gray-800">
-                        {item.thickness?.toFixed(3)} cm
+                        {item.thickness?.toFixed(3)} ס"מ
                       </span>
                     </p>
                     <p>
@@ -444,7 +454,7 @@ const AlgorithmResults: React.FC<AlgorithmResultsProps> = React.memo(
                       </span>
                     </p>
                     <p>
-                      <span className="font-medium text-gray-600">Mass:</span>{" "}
+                      <span className="font-medium text-gray-600">{t('Mass')}:</span>{" "}
                       <span className="text-gray-800">
                         {item.specificMass.toFixed(3)} kg/m³
                       </span>
@@ -455,7 +465,7 @@ const AlgorithmResults: React.FC<AlgorithmResultsProps> = React.memo(
             </div>
           </div>
         </div>
-        <div className="mt-8 bg-blue-50 p-5 rounded-md shadow-inner">
+        {/* <div className="mt-8 bg-blue-50 p-5 rounded-md shadow-inner">
           <h4 className="text-lg font-semibold mb-3 text-blue-800">
             Thermal Resistance Guide:
           </h4>
@@ -464,7 +474,7 @@ const AlgorithmResults: React.FC<AlgorithmResultsProps> = React.memo(
             Thermal Resistance, your insulation meets or exceeds the standards
             for your project type and location.
           </p>
-        </div>
+        </div> */}
       </div>
     );
   }

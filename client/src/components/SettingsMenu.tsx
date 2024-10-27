@@ -259,7 +259,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
                 </div>
                 <div className="space-y-6">
                   <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-gray-900">{t('Save Current Model')}</h3>
+                    <h3 className="block text-sm font-medium text-gray-700">{t('Save Current Model')}</h3>
                     <div className="flex gap-2">
                       <input
                         type="text"
@@ -279,7 +279,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
                     </div>
                   </div>
                   <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-gray-900"> {t('Load Saved Model')}</h3>
+                    <h3 className="block text-sm font-medium text-gray-700"> {t('Load Saved Model')}</h3>
                     <div className="flex gap-2">
                       <select
                         value={selectedModel}
