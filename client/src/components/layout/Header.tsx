@@ -10,8 +10,6 @@ import {
   useScrollTrigger,
   Slide,
 } from "@mui/material";
-import LanguageIcon from "@mui/icons-material/Language";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CalculateIcon from "@mui/icons-material/Calculate";
 
 interface HideOnScrollProps {

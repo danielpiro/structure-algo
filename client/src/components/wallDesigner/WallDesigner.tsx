@@ -1,18 +1,6 @@
 // src/components/wallDesigner/WallDesigner.tsx
 import React, { useState, useEffect, useCallback } from "react";
-import {
-  Container,
-  Grid,
-  Box,
-  Paper,
-  Stepper,
-  Step,
-  StepLabel,
-  Button,
-  IconButton,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import { Container, Grid, Box, Paper, IconButton } from "@mui/material";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -25,10 +13,7 @@ import ResultsPanel from "./ResultsPanel";
 import ProjectSettings from "./ProjectSettings";
 import SidebarPanel from "./SidebarPanel";
 
-const steps = ["הגדרות פרויקט", "בחירת שכבות", "תוצאות"];
-
 export const WallDesigner: React.FC = () => {
-  const theme = useTheme();
   const {
     layers,
     handleLayerChange,
@@ -44,7 +29,6 @@ export const WallDesigner: React.FC = () => {
   const [savedModels, setSavedModels] = useState<{
     [key: string]: LayerType[];
   }>({});
-  const [activeStep, setActiveStep] = useState(0);
 
   const [projectType, setProjectType] = useState<string>("");
   const [projectLocation, setProjectLocation] = useState<string>("");
@@ -104,14 +88,6 @@ export const WallDesigner: React.FC = () => {
       .filter((item): item is Model => item !== null);
     setItems(newItems);
   }, [layers]);
-
-  const handleNext = () => {
-    setActiveStep((prevStep) => prevStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevStep) => prevStep - 1);
-  };
 
   return (
     <DndProvider backend={HTML5Backend}>
