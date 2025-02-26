@@ -53,7 +53,7 @@ const Header: React.FC = () => {
                 flexGrow: { xs: 0, md: 1 },
               }}
             >
-              תכנון תרמי
+              Insulation{" "}
             </Typography>
 
             <Box
@@ -74,22 +74,10 @@ const Header: React.FC = () => {
                 textDecoration: "none",
               }}
             >
-              תכנון תרמי
+              Insulation
             </Typography>
 
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Button
-                component={RouterLink}
-                to="/project-config"
-                sx={{ mx: 1 }}
-              >
-                הגדרות פרויקט
-              </Button>
-
-              <Button component={RouterLink} to="/model-config" sx={{ mx: 1 }}>
-                הגדרות מודל
-              </Button>
-
               <Button
                 component={RouterLink}
                 to="/builder"
@@ -97,18 +85,6 @@ const Header: React.FC = () => {
                 sx={{ mx: 1 }}
               >
                 בונה קירות
-              </Button>
-
-              <Button component={RouterLink} to="/result" sx={{ mx: 1 }}>
-                תוצאות
-              </Button>
-
-              <Button startIcon={<LanguageIcon />} sx={{ mx: 1 }}>
-                עברית
-              </Button>
-
-              <Button startIcon={<AccountCircleIcon />} sx={{ mx: 1 }}>
-                התחברות
               </Button>
             </Box>
           </Toolbar>

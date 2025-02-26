@@ -123,74 +123,6 @@ export const WallDesigner: React.FC = () => {
           position: "relative",
         }}
       >
-        {/* Left Sidebar Navigation */}
-        <Box
-          sx={{
-            width: 280,
-            bgcolor: "background.paper",
-            borderRight: 1,
-            borderColor: "divider",
-            p: 3,
-            display: { xs: "none", md: "block" },
-          }}
-        >
-          <Stepper
-            activeStep={activeStep}
-            orientation="vertical"
-            sx={{
-              "& .MuiStepLabel-root": {
-                color: "text.primary",
-              },
-              "& .MuiStepIcon-root": {
-                fontSize: 28,
-                "&.Mui-active": {
-                  color: "action.active",
-                },
-              },
-              "& .MuiStepConnector-line": {
-                minHeight: 40,
-              },
-            }}
-          >
-            {steps.map((label) => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-
-          {/* Progress bar */}
-          <Box sx={{ mt: 4 }}>
-            <Box
-              sx={{
-                height: 6,
-                bgcolor: "background.default",
-                borderRadius: 3,
-                position: "relative",
-                overflow: "hidden",
-              }}
-            >
-              <Box
-                sx={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  height: "100%",
-                  bgcolor: "action.active",
-                  width: `${((activeStep + 1) / steps.length) * 100}%`,
-                  transition: "width 0.4s ease",
-                }}
-              />
-            </Box>
-            <Typography
-              variant="body2"
-              sx={{ mt: 1, color: "text.secondary", textAlign: "center" }}
-            >
-              {Math.round(((activeStep + 1) / steps.length) * 100)}% הושלם
-            </Typography>
-          </Box>
-        </Box>
-
         {/* Main Content Area */}
         <Box
           sx={{
@@ -216,10 +148,8 @@ export const WallDesigner: React.FC = () => {
               onSaveModel={saveCurrentModel}
               onLoadModel={loadSavedModel}
             />
-
             {/* Main Content */}
             <Grid container spacing={4}>
-              {/* Left Side - Layer Configuration */}
               <Grid item xs={12} md={5}>
                 <Paper
                   sx={{
@@ -241,7 +171,6 @@ export const WallDesigner: React.FC = () => {
                   />
                 </Paper>
               </Grid>
-
               {/* Right Side - 3D Model and Results */}
               <Grid item xs={12} md={7}>
                 <Grid container direction="column" spacing={4}>
@@ -300,56 +229,6 @@ export const WallDesigner: React.FC = () => {
                 </Grid>
               </Grid>
             </Grid>
-
-            {/* Navigation Buttons */}
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                mt: 4,
-                position: "sticky",
-                bottom: 32,
-                zIndex: 2,
-                p: 2,
-                borderRadius: 2,
-                bgcolor: "background.paper",
-                boxShadow: "0 8px 32px rgba(0,0,0,0.08)",
-              }}
-            >
-              <Button
-                size="large"
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                sx={{
-                  px: 4,
-                  "&:not(:disabled)": {
-                    color: "text.primary",
-                  },
-                }}
-              >
-                חזרה
-              </Button>
-
-              <Button
-                variant="contained"
-                size="large"
-                onClick={
-                  activeStep === steps.length - 1 ? undefined : handleNext
-                }
-                disabled={activeStep === steps.length - 1}
-                sx={{
-                  px: 6,
-                  background: `linear-gradient(135deg, ${theme.palette.primary.light} 0%, ${theme.palette.primary.main} 100%)`,
-                  boxShadow: `0 8px 16px ${theme.palette.primary.main}40`,
-                  transition: "transform 0.3s ease",
-                  "&:hover": {
-                    transform: "translateY(-2px)",
-                  },
-                }}
-              >
-                {activeStep === steps.length - 1 ? "סיום" : "המשך"}
-              </Button>
-            </Box>
           </Container>
 
           {/* Sidebar Panel */}

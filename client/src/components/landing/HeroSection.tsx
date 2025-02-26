@@ -91,7 +91,7 @@ const HeroSection: React.FC = () => {
 
             <Button
               component={RouterLink}
-              to="/designer"
+              to="/builder"
               variant="contained"
               size="large"
               endIcon={<ArrowForwardIcon />}
