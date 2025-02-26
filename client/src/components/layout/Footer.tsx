@@ -15,11 +15,11 @@ const Footer: React.FC = () => {
   return (
     <Box
       component="footer"
+      id="contact"
       sx={{
-        bgcolor: "background.default",
-        borderTop: `1px solid ${theme.palette.action.active}20`,
-        py: 4,
-        color: "text.light",
+        bgcolor: "primary.dark",
+        py: 8,
+        color: "white",
         position: "relative",
         overflow: "hidden",
         "&::before": {
@@ -29,8 +29,8 @@ const Footer: React.FC = () => {
           left: 0,
           right: 0,
           bottom: 0,
-          background: `linear-gradient(180deg, ${theme.palette.background.paper}80 0%, ${theme.palette.background.default} 100%)`,
-          opacity: 0.7,
+          background: `linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.2) 100%)`,
+          opacity: 1,
         },
       }}
     >
@@ -38,13 +38,61 @@ const Footer: React.FC = () => {
         <Box
           sx={{
             display: "flex",
-            flexDirection: { xs: "column", sm: "row" },
-            justifyContent: "space-between",
-            alignItems: "center",
+            flexDirection: "column",
             position: "relative",
             zIndex: 1,
           }}
         >
+          {/* Contact Section */}
+          <Box
+            sx={{
+              textAlign: "center",
+              mb: 6,
+            }}
+          >
+            <Typography
+              variant="h3"
+              sx={{
+                mb: 2,
+                fontWeight: "bold",
+                color: "white",
+              }}
+            >
+              צור קשר
+            </Typography>
+            <Typography
+              variant="h6"
+              sx={{
+                mb: 4,
+                color: "white",
+                opacity: 0.9,
+              }}
+            >
+              יש לך שאלות? נשמח לעזור!
+            </Typography>
+            <Box sx={{ mb: 4 }}>
+              <Typography variant="body1" sx={{ color: "white", mb: 1 }}>
+                טלפון: 03-1234567
+              </Typography>
+              <Typography variant="body1" sx={{ color: "white", mb: 1 }}>
+                אימייל: contact@thermal-design.co.il
+              </Typography>
+              <Typography variant="body1" sx={{ color: "white" }}>
+                כתובת: רחוב הרצל 100, תל אביב
+              </Typography>
+            </Box>
+          </Box>
+
+          {/* Divider */}
+          <Box
+            sx={{
+              width: "100%",
+              height: "1px",
+              bgcolor: "rgba(255,255,255,0.1)",
+              mb: 6,
+            }}
+          />
+
           {/* Social Links */}
           <Box sx={{ mb: { xs: 2, sm: 0 } }}>
             <IconButton
@@ -92,8 +140,9 @@ const Footer: React.FC = () => {
           <Typography
             variant="body2"
             sx={{
-              opacity: 0.8,
-              textAlign: { xs: "center", sm: "right" },
+              opacity: 0.9,
+              textAlign: "center",
+              color: "white",
             }}
           >
             © {new Date().getFullYear()} תכנון תרמי. כל הזכויות שמורות.

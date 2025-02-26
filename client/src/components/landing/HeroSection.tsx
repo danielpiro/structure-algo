@@ -10,7 +10,7 @@ const HeroSection: React.FC = () => {
     <Box
       sx={{
         position: "relative",
-        bgcolor: "background.default",
+        bgcolor: "primary.dark",
         color: "text.light",
         height: { xs: "calc(100vh - 64px)", md: "calc(100vh - 64px)" },
         minHeight: "600px",
@@ -24,8 +24,8 @@ const HeroSection: React.FC = () => {
           left: 0,
           right: 0,
           bottom: 0,
-          background: `radial-gradient(circle at 50% 50%, ${theme.palette.background.paper} 0%, ${theme.palette.background.default} 100%)`,
-          opacity: 0.7,
+          background: `linear-gradient(135deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.main} 100%)`,
+          opacity: 0.9,
         },
       }}
     >
@@ -75,16 +75,23 @@ const HeroSection: React.FC = () => {
               sx={{
                 fontWeight: 800,
                 mb: 2,
-                background: `linear-gradient(135deg, ${theme.palette.secondary.light} 0%, ${theme.palette.secondary.main} 100%)`,
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
+                color: "white",
+                textShadow: "2px 2px 4px rgba(0,0,0,0.3)",
                 display: "inline-block",
               }}
             >
               תכנון תרמי חכם
             </Typography>
 
-            <Typography variant="h4" sx={{ mb: 4 }}>
+            <Typography
+              variant="h4"
+              sx={{
+                mb: 4,
+                color: "white",
+                opacity: 0.9,
+                textShadow: "1px 1px 2px rgba(0,0,0,0.2)",
+              }}
+            >
               פלטפורמה מתקדמת לתכנון קירות ולחישוב ביצועים תרמיים לפי תקן ישראלי
               1045
             </Typography>

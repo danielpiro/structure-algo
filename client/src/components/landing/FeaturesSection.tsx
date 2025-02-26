@@ -22,17 +22,19 @@ const FeatureCard: React.FC<{
     <Card
       sx={{
         height: "100%",
-        bgcolor: "background.paper",
+        display: "flex",
+        flexDirection: "column",
+        bgcolor: "white",
         transition: "all 0.4s ease",
         "&:hover": {
           transform: "translateY(-8px)",
-          boxShadow: `0 20px 40px ${theme.palette.primary.dark}40`,
+          boxShadow: "0 20px 40px rgba(0,0,0,0.15)",
           "& .icon-wrapper": {
             transform: "rotate(10deg) scale(1.1)",
           },
         },
         borderRadius: 4,
-        border: `1px solid ${theme.palette.action.active}40`,
+        border: "1px solid rgba(0,0,0,0.1)",
         overflow: "visible",
         position: "relative",
       }}
@@ -49,11 +51,11 @@ const FeatureCard: React.FC<{
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: `linear-gradient(135deg, ${theme.palette.action.active} 0%, ${theme.palette.secondary.main} 100%)`,
-          color: theme.palette.primary.contrastText,
+          background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
+          color: "white",
           boxShadow: `
-            0 12px 24px ${theme.palette.primary.dark}40,
-            inset 0 2px 6px ${theme.palette.secondary.light}60
+            0 12px 24px rgba(0,0,0,0.2),
+            inset 0 2px 6px rgba(255,255,255,0.2)
           `,
           transition: "transform 0.4s ease",
           zIndex: 1,
@@ -66,18 +68,10 @@ const FeatureCard: React.FC<{
           pt: 6,
           pb: 4,
           px: 4,
-          position: "relative",
-          "&::before": {
-            content: '""',
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: `linear-gradient(180deg, ${theme.palette.action.active}10 0%, transparent 100%)`,
-            zIndex: 0,
-            borderRadius: 4,
-          },
+          flexGrow: 1,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "flex-start",
         }}
       >
         <Typography
@@ -122,9 +116,10 @@ const FeaturesSection: React.FC = () => {
 
   return (
     <Box
+      id="features"
       sx={{
         py: 16,
-        bgcolor: "background.default",
+        bgcolor: "background.paper",
         position: "relative",
         "&::before": {
           content: '""',
@@ -133,8 +128,8 @@ const FeaturesSection: React.FC = () => {
           left: 0,
           right: 0,
           bottom: 0,
-          background: `radial-gradient(circle at 50% 0%, ${theme.palette.background.paper} 0%, ${theme.palette.background.default} 70%)`,
-          opacity: 0.7,
+          background: `linear-gradient(180deg, ${theme.palette.primary.dark}10 0%, ${theme.palette.background.paper} 100%)`,
+          opacity: 1,
         },
       }}
     >

@@ -1,28 +1,28 @@
 export const palette = {
   primary: {
-    main: "#1976D2", // Professional blue
-    light: "#42A5F5",
-    dark: "#1565C0",
+    main: "#1565C0", // Darker blue for better contrast
+    light: "#1E88E5",
+    dark: "#0D47A1",
     contrastText: "#FFFFFF",
   },
   secondary: {
-    main: "#424242", // Neutral gray
-    light: "#616161",
-    dark: "#212121",
+    main: "#2C2C2C", // Darker gray for better contrast
+    light: "#424242",
+    dark: "#1A1A1A",
     contrastText: "#FFFFFF",
   },
   action: {
-    active: "#1976D2",
-    hover: "#2196F3",
+    active: "#1565C0",
+    hover: "#1976D2",
   },
   background: {
-    default: "#F5F5F5", // Light gray background
-    paper: "#FFFFFF", // White
-    dark: "#EEEEEE",
+    default: "#FFFFFF", // White background
+    paper: "#F8F9FA", // Very light gray
+    dark: "#E9ECEF",
   },
   text: {
-    primary: "#212121", // Dark gray for main text
-    secondary: "#757575", // Medium gray for secondary text
+    primary: "#1A1A1A", // Almost black for maximum contrast
+    secondary: "#4A4A4A", // Darker gray for better readability
     light: "#FFFFFF", // White for contrast text
   },
   success: {

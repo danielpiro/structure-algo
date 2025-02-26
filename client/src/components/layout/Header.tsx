@@ -1,5 +1,6 @@
-import React from "react";
+import React, { MouseEvent } from "react";
 import { Link as RouterLink } from "react-router-dom";
+import { ScrollHelper } from "./ScrollHelper";
 import {
   AppBar,
   Toolbar,
@@ -35,56 +36,91 @@ const Header: React.FC = () => {
         color="default"
         sx={{ bgcolor: "background.paper" }}
       >
-        <Container maxWidth="xl">
-          <Toolbar disableGutters>
-            <Typography
-              variant="h6"
-              noWrap
-              component={RouterLink}
-              to="/"
-              sx={{
-                mr: 2,
-                display: { xs: "none", md: "flex" },
-                fontWeight: 700,
-                color: "primary.main",
-                textDecoration: "none",
-                flexGrow: { xs: 0, md: 1 },
-              }}
-            >
-              Insulation{" "}
-            </Typography>
-
+        <Container maxWidth="xl" sx={{ position: "relative" }}>
+          <Toolbar disableGutters sx={{ justifyContent: "center" }}>
             <Box
-              sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
-            ></Box>
-
-            <Typography
-              variant="h6"
-              noWrap
-              component={RouterLink}
-              to="/"
               sx={{
-                mr: 2,
-                display: { xs: "flex", md: "none" },
-                flexGrow: 1,
-                fontWeight: 700,
-                color: "primary.main",
-                textDecoration: "none",
+                position: "absolute",
+                left: 0,
+                width: "160px",
+                display: { xs: "none", md: "block" },
               }}
             >
-              Insulation
-            </Typography>
-
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Button
+              <Typography
+                variant="h6"
+                noWrap
                 component={RouterLink}
-                to="/builder"
-                startIcon={<CalculateIcon />}
-                sx={{ mx: 1 }}
+                to="/"
+                sx={{
+                  fontWeight: 700,
+                  color: "primary.main",
+                  textDecoration: "none",
+                }}
               >
-                בונה קירות
-              </Button>
+                Insulation
+              </Typography>
             </Box>
+
+            <ScrollHelper>
+              {(handleScroll) => (
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 2,
+                    justifyContent: "center",
+                    width: "100%",
+                    maxWidth: "600px",
+                    position: "relative",
+                    right: "30px",
+                  }}
+                >
+                  <Button
+                    onClick={(e: MouseEvent) => {
+                      e.preventDefault();
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
+                    color="primary"
+                    sx={{ color: "text.primary" }}
+                  >
+                    בית
+                  </Button>
+                  <Button
+                    onClick={(e: MouseEvent) => {
+                      e.preventDefault();
+                      handleScroll("features");
+                    }}
+                    color="primary"
+                    sx={{ color: "text.primary" }}
+                  >
+                    תכונות
+                  </Button>
+                  <Button
+                    onClick={(e: MouseEvent) => {
+                      e.preventDefault();
+                      handleScroll("contact");
+                    }}
+                    color="primary"
+                    sx={{ color: "text.primary" }}
+                  >
+                    צור קשר
+                  </Button>
+                  <Button
+                    component={RouterLink}
+                    to="/builder"
+                    variant="contained"
+                    startIcon={<CalculateIcon />}
+                    sx={{
+                      position: "absolute",
+                      right: "-150px",
+                      px: 3,
+                    }}
+                  >
+                    בונה קירות
+                  </Button>
+                </Box>
+              )}
+            </ScrollHelper>
           </Toolbar>
         </Container>
       </AppBar>
