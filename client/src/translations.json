@@ -87,5 +87,10 @@
   "Consider adding more insulation to meet the required standards.": "שקול להוסיף עוד בידוד כדי לעמוד בתקנים הנדרשים.",
   "Fire Ressistence": "עמידות באש",
   "LCA": "LCA",
-  "Documents": "מסמכים"
+  "Documents": "מסמכים",
+  "Fixed thickness": "עובי קבוע",
+  "Range": "טווח",
+  "Add layers to see the 3D model": "הוסף שכבות כדי לראות את המודל התלת מימדי",
+  "Thermal Efficiency": "יעילות תרמית",
+  "Select a layer from the model to view details": "בחר שכבה מהמודל כדי להציג פרטים"
 }

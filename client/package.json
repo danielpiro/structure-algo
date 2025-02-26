@@ -3,10 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@emotion/react": "^11.13.0",
-    "@emotion/styled": "^11.13.0",
+    "@emotion/cache": "^11.14.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@google-cloud/translate": "^8.4.0",
     "@headlessui/react": "^2.1.2",
+    "@mui/icons-material": "^6.4.6",
+    "@mui/lab": "^6.0.0-beta.29",
+    "@mui/material": "^6.4.6",
+    "@mui/system": "^6.4.6",
+    "@mui/x-data-grid": "^7.27.1",
     "@react-three/drei": "^9.110.0",
     "@react-three/fiber": "^8.17.5",
     "@testing-library/jest-dom": "^5.17.0",
@@ -23,10 +29,13 @@
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.3.1",
     "react-icons": "^5.3.0",
+    "react-router-dom": "^7.2.0",
     "react-scripts": "5.0.1",
     "react-select": "^5.8.0",
     "react-tabs": "^6.0.2",
     "recharts": "^2.12.7",
+    "stylis": "^4.3.6",
+    "stylis-plugin-rtl": "^2.1.1",
     "three": "^0.167.1",
     "typescript": "^4.9.5",
     "uuid": "^8.3.2"
@@ -57,9 +66,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@types/uuid": "^10.0.0",
-    "autoprefixer": "^10.4.20",
-    "postcss": "^8.4.41",
-    "tailwindcss": "^3.4.10"
+    "@types/stylis": "^4.2.7",
+    "@types/uuid": "^10.0.0"
   }
 }

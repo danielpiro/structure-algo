@@ -35,7 +35,7 @@ export const useWallDesigner = () => {
       max: 5,
       thermal: 0.1,
       mass: 1,
-      color: "blue",
+      color: "#1E90FF",
     };
     setModelDetails((prevDetails) => ({
       ...prevDetails,
