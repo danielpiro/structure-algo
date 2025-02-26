@@ -1,29 +1,29 @@
 export const palette = {
   primary: {
-    main: "#3D8D7A", // Dark Green - Primary brand color
-    light: "#5EAFA0",
-    dark: "#2C6859",
+    main: "#1976D2", // Professional blue
+    light: "#42A5F5",
+    dark: "#1565C0",
     contrastText: "#FFFFFF",
   },
   secondary: {
-    main: "#A3D1C6", // Warm Beige - Secondary color
-    light: "#C5E6DE",
-    dark: "#85B3A9",
-    contrastText: "#333333",
+    main: "#424242", // Neutral gray
+    light: "#616161",
+    dark: "#212121",
+    contrastText: "#FFFFFF",
   },
   action: {
-    active: "#B3D8A8", // Light Green - Accents
-    hover: "#D2E9CD",
+    active: "#1976D2",
+    hover: "#2196F3",
   },
   background: {
-    default: "#F8F9FA",
-    paper: "#FFFFFF",
-    dark: "#2C6859",
+    default: "#F5F5F5", // Light gray background
+    paper: "#FFFFFF", // White
+    dark: "#EEEEEE",
   },
   text: {
-    primary: "#333333",
-    secondary: "#666666",
-    light: "#FBFFE4", // Soft Yellow - Used for CTAs and important text
+    primary: "#212121", // Dark gray for main text
+    secondary: "#757575", // Medium gray for secondary text
+    light: "#FFFFFF", // White for contrast text
   },
   success: {
     main: "#4CAF50",

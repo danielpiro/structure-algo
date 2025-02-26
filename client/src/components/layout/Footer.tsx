@@ -3,88 +3,100 @@ import {
   Box,
   Container,
   Typography,
-  Link,
-  Grid,
   IconButton,
+  useTheme,
 } from "@mui/material";
 import FacebookIcon from "@mui/icons-material/Facebook";
-import TwitterIcon from "@mui/icons-material/Twitter";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import GitHubIcon from "@mui/icons-material/GitHub";
 
 const Footer: React.FC = () => {
+  const theme = useTheme();
   return (
     <Box
       component="footer"
       sx={{
-        bgcolor: "background.dark",
-        py: 6,
+        bgcolor: "background.default",
+        borderTop: `1px solid ${theme.palette.action.active}20`,
+        py: 4,
         color: "text.light",
+        position: "relative",
+        overflow: "hidden",
+        "&::before": {
+          content: '""',
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: `linear-gradient(180deg, ${theme.palette.background.paper}80 0%, ${theme.palette.background.default} 100%)`,
+          opacity: 0.7,
+        },
       }}
     >
       <Container maxWidth="lg">
-        <Grid container spacing={4}>
-          <Grid item xs={12} md={4}>
-            <Typography variant="h6" gutterBottom>
-              תכנון תרמי
-            </Typography>
-            <Typography variant="body2">
-              מערכת לתכנון וניתוח תרמי של מעטפת הבניין בישראל
-            </Typography>
-          </Grid>
-
-          <Grid item xs={12} md={4}>
-            <Typography variant="h6" gutterBottom>
-              קישורים מהירים
-            </Typography>
-            <Link href="/" color="inherit" display="block" sx={{ mb: 1 }}>
-              דף הבית
-            </Link>
-            <Link
-              href="/designer"
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
+            justifyContent: "space-between",
+            alignItems: "center",
+            position: "relative",
+            zIndex: 1,
+          }}
+        >
+          {/* Social Links */}
+          <Box sx={{ mb: { xs: 2, sm: 0 } }}>
+            <IconButton
               color="inherit"
-              display="block"
-              sx={{ mb: 1 }}
+              sx={{
+                transition: "all 0.3s ease",
+                "&:hover": {
+                  transform: "translateY(-3px)",
+                  color: "secondary.main",
+                  background: `linear-gradient(180deg, ${theme.palette.action.active}20 0%, transparent 100%)`,
+                },
+              }}
             >
-              מתכנן קירות
-            </Link>
-            <Link href="#" color="inherit" display="block" sx={{ mb: 1 }}>
-              אודות
-            </Link>
-            <Link href="#" color="inherit" display="block">
-              צור קשר
-            </Link>
-          </Grid>
+              <FacebookIcon />
+            </IconButton>
+            <IconButton
+              color="inherit"
+              sx={{
+                transition: "all 0.3s ease",
+                "&:hover": {
+                  transform: "translateY(-3px)",
+                  color: "secondary.main",
+                  background: `linear-gradient(180deg, ${theme.palette.action.active}20 0%, transparent 100%)`,
+                },
+              }}
+            >
+              <LinkedInIcon />
+            </IconButton>
+            <IconButton
+              color="inherit"
+              sx={{
+                transition: "all 0.3s ease",
+                "&:hover": {
+                  transform: "translateY(-3px)",
+                  color: "secondary.main",
+                  background: `linear-gradient(180deg, ${theme.palette.action.active}20 0%, transparent 100%)`,
+                },
+              }}
+            >
+              <GitHubIcon />
+            </IconButton>
+          </Box>
 
-          <Grid item xs={12} md={4}>
-            <Typography variant="h6" gutterBottom>
-              עקבו אחרינו
-            </Typography>
-            <Box>
-              <IconButton color="inherit">
-                <FacebookIcon />
-              </IconButton>
-              <IconButton color="inherit">
-                <TwitterIcon />
-              </IconButton>
-              <IconButton color="inherit">
-                <LinkedInIcon />
-              </IconButton>
-              <IconButton color="inherit">
-                <GitHubIcon />
-              </IconButton>
-            </Box>
-          </Grid>
-        </Grid>
-
-        <Box mt={5}>
-          <Typography variant="body2" align="center">
-            {"Copyright © "}
-            <Link color="inherit" href="/">
-              תכנון תרמי
-            </Link>{" "}
-            {new Date().getFullYear()}
-            {"."}
+          {/* Copyright */}
+          <Typography
+            variant="body2"
+            sx={{
+              opacity: 0.8,
+              textAlign: { xs: "center", sm: "right" },
+            }}
+          >
+            © {new Date().getFullYear()} תכנון תרמי. כל הזכויות שמורות.
           </Typography>
         </Box>
       </Container>

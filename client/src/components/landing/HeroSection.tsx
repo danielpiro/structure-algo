@@ -2,40 +2,54 @@ import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { Box, Typography, Button, Container, useTheme } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import useTranslations from "../../hooks/useTranslations";
 
 const HeroSection: React.FC = () => {
-  const { t } = useTranslations();
   const theme = useTheme();
 
   return (
     <Box
       sx={{
         position: "relative",
-        bgcolor: "background.dark",
+        bgcolor: "background.default",
         color: "text.light",
         height: { xs: "calc(100vh - 64px)", md: "calc(100vh - 64px)" },
         minHeight: "600px",
         display: "flex",
         alignItems: "center",
         overflow: "hidden",
+        "&::before": {
+          content: '""',
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: `radial-gradient(circle at 50% 50%, ${theme.palette.background.paper} 0%, ${theme.palette.background.default} 100%)`,
+          opacity: 0.7,
+        },
       }}
     >
-      {/* Animated background effect */}
+      {/* Enhanced animated glow effect */}
       <Box
         sx={{
           position: "absolute",
-          width: "100%",
-          height: "100%",
-          opacity: 0.1,
-          backgroundImage:
-            "radial-gradient(circle, rgba(255,255,255,0.8) 5%, transparent 6%)",
-          backgroundSize: "30px 30px",
-          animation: "moveBackground 60s linear infinite",
-          "@keyframes moveBackground": {
-            "0%": { backgroundPosition: "0 0" },
-            "100%": { backgroundPosition: "1000px 1000px" },
+          width: "200%",
+          height: "200%",
+          background: `radial-gradient(circle at center, ${theme.palette.action.active}40 0%, transparent 50%)`,
+          animation:
+            "rotate 20s linear infinite, pulse 8s ease-in-out infinite",
+          "@keyframes rotate": {
+            "0%": { transform: "translate(-50%, -50%) rotate(0deg)" },
+            "100%": { transform: "translate(-50%, -50%) rotate(360deg)" },
           },
+          "@keyframes pulse": {
+            "0%, 100%": { opacity: 0.3 },
+            "50%": { opacity: 0.5 },
+          },
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          pointerEvents: "none",
         }}
       />
 
@@ -128,28 +142,70 @@ const HeroSection: React.FC = () => {
               }}
             >
               {/* This would ideally be replaced with a proper 3D model using Three.js */}
-              <Typography
-                variant="h3"
-                sx={{ color: "text.primary", fontWeight: "bold", opacity: 0.7 }}
-              >
-                הדמיית קיר תלת-מימדית
-              </Typography>
-
-              {/* Glowing effect */}
+              {/* 3D Model Container with enhanced effects */}
               <Box
                 sx={{
-                  position: "absolute",
-                  width: "150%",
-                  height: "150%",
-                  background:
-                    "radial-gradient(circle, rgba(179, 216, 168, 0.4) 0%, transparent 70%)",
-                  animation: "pulse 4s ease-in-out infinite",
-                  "@keyframes pulse": {
-                    "0%, 100%": { opacity: 0.5, transform: "scale(1)" },
-                    "50%": { opacity: 0.7, transform: "scale(1.05)" },
-                  },
+                  position: "relative",
+                  width: "100%",
+                  height: "100%",
+                  perspective: "1000px",
                 }}
-              />
+              >
+                {/* 3D Model Placeholder with isometric effect */}
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform:
+                      "translate(-50%, -50%) rotateX(15deg) rotateY(15deg)",
+                    width: "80%",
+                    height: "80%",
+                    background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
+                    borderRadius: "15px",
+                    boxShadow: `
+                      0 10px 30px rgba(0,0,0,0.3),
+                      inset 0 0 20px ${theme.palette.primary.light}80,
+                      0 0 50px ${theme.palette.action.active}40
+                    `,
+                    "&::before": {
+                      content: '""',
+                      position: "absolute",
+                      top: "-2px",
+                      left: "-2px",
+                      right: "-2px",
+                      bottom: "-2px",
+                      background: `linear-gradient(45deg, ${theme.palette.action.active}, ${theme.palette.secondary.main})`,
+                      borderRadius: "17px",
+                      zIndex: -1,
+                      opacity: 0.5,
+                      filter: "blur(10px)",
+                    },
+                  }}
+                />
+
+                {/* Animated accent lines */}
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    background: `
+                      linear-gradient(90deg, transparent 50%, ${theme.palette.action.active}20 50%),
+                      linear-gradient(0deg, transparent 50%, ${theme.palette.action.active}20 50%)
+                    `,
+                    backgroundSize: "20px 20px",
+                    animation: "moveLines 20s linear infinite",
+                    "@keyframes moveLines": {
+                      "0%": { backgroundPosition: "0 0" },
+                      "100%": { backgroundPosition: "20px 20px" },
+                    },
+                    opacity: 0.3,
+                  }}
+                />
+              </Box>
             </Box>
           </Box>
         </Box>

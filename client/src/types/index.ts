@@ -8,7 +8,8 @@ export type LayerType = {
   thickness: number;
   thermal: number;
   mass: number;
-  color: string;
+  color?: string;
+  texture?: number;
 };
 
 export type Model = {

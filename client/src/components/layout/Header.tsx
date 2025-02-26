@@ -80,11 +80,27 @@ const Header: React.FC = () => {
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <Button
                 component={RouterLink}
-                to="/designer"
+                to="/project-config"
+                sx={{ mx: 1 }}
+              >
+                הגדרות פרויקט
+              </Button>
+
+              <Button component={RouterLink} to="/model-config" sx={{ mx: 1 }}>
+                הגדרות מודל
+              </Button>
+
+              <Button
+                component={RouterLink}
+                to="/builder"
                 startIcon={<CalculateIcon />}
                 sx={{ mx: 1 }}
               >
-                מתכנן קירות
+                בונה קירות
+              </Button>
+
+              <Button component={RouterLink} to="/result" sx={{ mx: 1 }}>
+                תוצאות
               </Button>
 
               <Button startIcon={<LanguageIcon />} sx={{ mx: 1 }}>

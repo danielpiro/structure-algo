@@ -17,10 +17,7 @@ import {
 } from "@mui/material";
 import { Model } from "../../types";
 import useTranslations from "../../hooks/useTranslations";
-import {
-  calculateThermalResistance,
-  linearInterpolate,
-} from "../../utils/calculations";
+import { calculateThermalResistance } from "../../utils/calculations";
 
 interface ResultsPanelProps {
   items: Model[];

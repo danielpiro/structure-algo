@@ -15,7 +15,6 @@ import {
   Card,
   CardHeader,
   CardContent,
-  CardActions,
 } from "@mui/material";
 import {
   ExpandMore as ExpandMoreIcon,
@@ -215,10 +214,8 @@ const LayerForm: React.FC<LayerFormProps> = ({
         action={
           <>
             <ColorSelector
-              color={layer.color}
-              onChange={(color: string | number) =>
-                onChange(layer.id, "color", color)
-              }
+              color={layer.color || "#FFFFFF"}
+              onChange={(color: string) => onChange(layer.id, "color", color)}
             />
             <IconButton
               aria-label="delete"

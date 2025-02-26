@@ -1,6 +1,6 @@
 // src/components/ui/ColorSelector.tsx - Updated version
 import React, { useState } from "react";
-import { Box, IconButton, Popover, Grid, useTheme } from "@mui/material";
+import { Box, IconButton, Popover, Grid } from "@mui/material";
 import { ColorLens as ColorLensIcon } from "@mui/icons-material";
 
 interface ColorSelectorProps {
@@ -72,7 +72,6 @@ const getSafeColor = (color: string): string => {
 
 const ColorSelector: React.FC<ColorSelectorProps> = ({ color, onChange }) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const theme = useTheme();
 
   // Ensure the color is in a valid format
   const safeColor = getSafeColor(color);

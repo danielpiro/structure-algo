@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import { Box, Typography, Paper } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { LayerType } from "../../types";
 import useTranslations from "../../hooks/useTranslations";
 import WallModel from "./WallModel";

@@ -10,6 +10,8 @@ import {
   StepLabel,
   Button,
   IconButton,
+  Typography,
+  useTheme,
 } from "@mui/material";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import { DndProvider } from "react-dnd";
@@ -22,11 +24,11 @@ import LayerManager from "./LayerManager";
 import ResultsPanel from "./ResultsPanel";
 import ProjectSettings from "./ProjectSettings";
 import SidebarPanel from "./SidebarPanel";
-import useTranslations from "../../hooks/useTranslations";
 
 const steps = ["הגדרות פרויקט", "בחירת שכבות", "תוצאות"];
 
 export const WallDesigner: React.FC = () => {
+  const theme = useTheme();
   const {
     layers,
     handleLayerChange,
@@ -49,8 +51,6 @@ export const WallDesigner: React.FC = () => {
   const [modelType, setModelType] = useState<string>("");
   const [isolationType, setIsolationType] = useState<string>("");
   const [wallColor, setWallColor] = useState<string>("");
-
-  const { t } = useTranslations();
 
   // Handler for when a layer is clicked in the 3D model
   const handleLayerClick = useCallback((layer: LayerType) => {
@@ -117,160 +117,249 @@ export const WallDesigner: React.FC = () => {
     <DndProvider backend={HTML5Backend}>
       <Box
         sx={{
-          py: 4,
-          bgcolor: "background.default",
+          display: "flex",
           minHeight: "calc(100vh - 64px)",
+          bgcolor: "background.default",
           position: "relative",
         }}
       >
-        <Container maxWidth="xl">
-          {/* Stepper */}
-          <Paper
-            elevation={0}
+        {/* Left Sidebar Navigation */}
+        <Box
+          sx={{
+            width: 280,
+            bgcolor: "background.paper",
+            borderRight: 1,
+            borderColor: "divider",
+            p: 3,
+            display: { xs: "none", md: "block" },
+          }}
+        >
+          <Stepper
+            activeStep={activeStep}
+            orientation="vertical"
             sx={{
-              p: 3,
-              mb: 4,
-              bgcolor: "white",
-              borderRadius: 2,
-              boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+              "& .MuiStepLabel-root": {
+                color: "text.primary",
+              },
+              "& .MuiStepIcon-root": {
+                fontSize: 28,
+                "&.Mui-active": {
+                  color: "action.active",
+                },
+              },
+              "& .MuiStepConnector-line": {
+                minHeight: 40,
+              },
             }}
           >
-            <Stepper activeStep={activeStep} alternativeLabel>
-              {steps.map((label) => (
-                <Step key={label}>
-                  <StepLabel>{label}</StepLabel>
-                </Step>
-              ))}
-            </Stepper>
-          </Paper>
+            {steps.map((label) => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
 
-          {/* Settings Panel */}
-          <ProjectSettings
-            projectType={projectType}
-            projectLocation={projectLocation}
-            onProjectTypeChange={setProjectType}
-            onProjectLocationChange={setProjectLocation}
-            modelType={modelType}
-            isolationType={isolationType}
-            wallColor={wallColor}
-            onModelTypeChange={setModelType}
-            onIsolationTypeChange={setIsolationType}
-            onWallColorChange={setWallColor}
-            savedModels={savedModels}
-            onSaveModel={saveCurrentModel}
-            onLoadModel={loadSavedModel}
-          />
-
-          {/* Main Content */}
-          <Grid container spacing={4}>
-            {/* Left Side - Layer Configuration */}
-            <Grid item xs={12} md={5}>
-              <Paper
+          {/* Progress bar */}
+          <Box sx={{ mt: 4 }}>
+            <Box
+              sx={{
+                height: 6,
+                bgcolor: "background.default",
+                borderRadius: 3,
+                position: "relative",
+                overflow: "hidden",
+              }}
+            >
+              <Box
                 sx={{
-                  p: 3,
-                  bgcolor: "white",
-                  borderRadius: 2,
-                  boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
                   height: "100%",
+                  bgcolor: "action.active",
+                  width: `${((activeStep + 1) / steps.length) * 100}%`,
+                  transition: "width 0.4s ease",
                 }}
-              >
-                <LayerManager
-                  layers={layers}
-                  onLayerChange={handleLayerChange}
-                  onAddLayer={handleAddLayer}
-                  onRemoveLayer={handleRemoveLayer}
-                  onRemoveAllLayers={handleRemoveAllLayers}
-                  onReorderLayers={handleSwapLayers}
-                  selectedLayerId={selectedLayer?.id}
-                />
-              </Paper>
-            </Grid>
+              />
+            </Box>
+            <Typography
+              variant="body2"
+              sx={{ mt: 1, color: "text.secondary", textAlign: "center" }}
+            >
+              {Math.round(((activeStep + 1) / steps.length) * 100)}% הושלם
+            </Typography>
+          </Box>
+        </Box>
 
-            {/* Right Side - 3D Model and Results */}
-            <Grid item xs={12} md={7}>
-              <Grid container direction="column" spacing={4}>
-                {/* 3D Model */}
-                <Grid item>
-                  <Paper
-                    sx={{
-                      bgcolor: "white",
-                      borderRadius: 2,
-                      boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
-                      overflow: "hidden",
-                      position: "relative",
-                    }}
-                  >
-                    <Box sx={{ height: 500, width: "100%" }}>
-                      <ModelViewer
-                        layers={layers}
-                        onLayerClick={handleLayerClick}
-                        selectedLayerId={selectedLayer?.id}
-                      />
-                    </Box>
+        {/* Main Content Area */}
+        <Box
+          sx={{
+            flex: 1,
+            p: 4,
+            overflowY: "auto",
+          }}
+        >
+          <Container maxWidth="xl">
+            {/* Settings Panel */}
+            <ProjectSettings
+              projectType={projectType}
+              projectLocation={projectLocation}
+              onProjectTypeChange={setProjectType}
+              onProjectLocationChange={setProjectLocation}
+              modelType={modelType}
+              isolationType={isolationType}
+              wallColor={wallColor}
+              onModelTypeChange={setModelType}
+              onIsolationTypeChange={setIsolationType}
+              onWallColorChange={setWallColor}
+              savedModels={savedModels}
+              onSaveModel={saveCurrentModel}
+              onLoadModel={loadSavedModel}
+            />
 
-                    {/* Toggle button for the sidebar */}
-                    {selectedLayer && !sidebarOpen && (
-                      <IconButton
-                        sx={{
-                          position: "absolute",
-                          top: 16,
-                          right: 16,
-                          bgcolor: "background.paper",
-                          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-                          "&:hover": {
-                            bgcolor: "background.paper",
-                          },
-                        }}
-                        onClick={() => setSidebarOpen(true)}
-                        aria-label="Show details"
-                      >
-                        <MenuIcon />
-                      </IconButton>
-                    )}
-                  </Paper>
-                </Grid>
-
-                {/* Results Panel */}
-                <Grid item>
-                  <ResultsPanel
-                    items={items}
-                    projectType={projectType}
-                    projectLocation={projectLocation}
-                    modelType={modelType}
-                    isolationType={isolationType}
-                    wallColor={wallColor}
+            {/* Main Content */}
+            <Grid container spacing={4}>
+              {/* Left Side - Layer Configuration */}
+              <Grid item xs={12} md={5}>
+                <Paper
+                  sx={{
+                    p: 3,
+                    bgcolor: "white",
+                    borderRadius: 2,
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+                    height: "100%",
+                  }}
+                >
+                  <LayerManager
+                    layers={layers}
+                    onLayerChange={handleLayerChange}
+                    onAddLayer={handleAddLayer}
+                    onRemoveLayer={handleRemoveLayer}
+                    onRemoveAllLayers={handleRemoveAllLayers}
+                    onReorderLayers={handleSwapLayers}
+                    selectedLayerId={selectedLayer?.id}
                   />
+                </Paper>
+              </Grid>
+
+              {/* Right Side - 3D Model and Results */}
+              <Grid item xs={12} md={7}>
+                <Grid container direction="column" spacing={4}>
+                  {/* 3D Model */}
+                  <Grid item>
+                    <Paper
+                      sx={{
+                        bgcolor: "white",
+                        borderRadius: 2,
+                        boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+                        overflow: "hidden",
+                        position: "relative",
+                      }}
+                    >
+                      <Box sx={{ height: 500, width: "100%" }}>
+                        <ModelViewer
+                          layers={layers}
+                          onLayerClick={handleLayerClick}
+                          selectedLayerId={selectedLayer?.id}
+                        />
+                      </Box>
+
+                      {/* Toggle button for the sidebar */}
+                      {selectedLayer && !sidebarOpen && (
+                        <IconButton
+                          sx={{
+                            position: "absolute",
+                            top: 16,
+                            right: 16,
+                            bgcolor: "background.paper",
+                            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                            "&:hover": {
+                              bgcolor: "background.paper",
+                            },
+                          }}
+                          onClick={() => setSidebarOpen(true)}
+                          aria-label="Show details"
+                        >
+                          <MenuIcon />
+                        </IconButton>
+                      )}
+                    </Paper>
+                  </Grid>
+
+                  {/* Results Panel */}
+                  <Grid item>
+                    <ResultsPanel
+                      items={items}
+                      projectType={projectType}
+                      projectLocation={projectLocation}
+                      modelType={modelType}
+                      isolationType={isolationType}
+                      wallColor={wallColor}
+                    />
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
-          </Grid>
 
-          {/* Navigation Buttons */}
-          <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-            <Button
-              disabled={activeStep === 0}
-              onClick={handleBack}
-              sx={{ mr: 2 }}
+            {/* Navigation Buttons */}
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                mt: 4,
+                position: "sticky",
+                bottom: 32,
+                zIndex: 2,
+                p: 2,
+                borderRadius: 2,
+                bgcolor: "background.paper",
+                boxShadow: "0 8px 32px rgba(0,0,0,0.08)",
+              }}
             >
-              חזרה
-            </Button>
+              <Button
+                size="large"
+                disabled={activeStep === 0}
+                onClick={handleBack}
+                sx={{
+                  px: 4,
+                  "&:not(:disabled)": {
+                    color: "text.primary",
+                  },
+                }}
+              >
+                חזרה
+              </Button>
 
-            <Button
-              variant="contained"
-              onClick={activeStep === steps.length - 1 ? undefined : handleNext}
-              disabled={activeStep === steps.length - 1}
-            >
-              {activeStep === steps.length - 1 ? "סיום" : "המשך"}
-            </Button>
-          </Box>
-        </Container>
+              <Button
+                variant="contained"
+                size="large"
+                onClick={
+                  activeStep === steps.length - 1 ? undefined : handleNext
+                }
+                disabled={activeStep === steps.length - 1}
+                sx={{
+                  px: 6,
+                  background: `linear-gradient(135deg, ${theme.palette.primary.light} 0%, ${theme.palette.primary.main} 100%)`,
+                  boxShadow: `0 8px 16px ${theme.palette.primary.main}40`,
+                  transition: "transform 0.3s ease",
+                  "&:hover": {
+                    transform: "translateY(-2px)",
+                  },
+                }}
+              >
+                {activeStep === steps.length - 1 ? "סיום" : "המשך"}
+              </Button>
+            </Box>
+          </Container>
 
-        {/* Sidebar Panel */}
-        <SidebarPanel
-          open={sidebarOpen}
-          onClose={handleCloseSidebar}
-          selectedLayer={selectedLayer}
-        />
+          {/* Sidebar Panel */}
+          <SidebarPanel
+            open={sidebarOpen}
+            onClose={handleCloseSidebar}
+            selectedLayer={selectedLayer}
+            onLayerChange={handleLayerChange}
+          />
+        </Box>
       </Box>
     </DndProvider>
   );

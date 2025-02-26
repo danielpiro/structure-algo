@@ -14,7 +14,7 @@ import {
   DialogContent,
   DialogActions,
   TextField,
-  IconButton,
+  Theme,
 } from "@mui/material";
 import { Settings, Save, FolderOpen } from "@mui/icons-material";
 import { LayerType } from "../../types";
@@ -89,10 +89,22 @@ const ProjectSettings: React.FC<ProjectSettingsProps> = ({
       <Paper
         elevation={0}
         sx={{
-          p: 3,
-          bgcolor: "white",
+          p: 4,
+          bgcolor: "background.paper",
           borderRadius: 2,
-          boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+          boxShadow: `0 8px 24px rgba(0,0,0,0.08)`,
+          position: "relative",
+          "&::before": {
+            content: '""',
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            height: "4px",
+            background: (theme: Theme) =>
+              `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
+            borderRadius: "2px 2px 0 0",
+          },
         }}
       >
         <Grid container spacing={3}>
@@ -102,12 +114,32 @@ const ProjectSettings: React.FC<ProjectSettingsProps> = ({
               variant="h6"
               sx={{ mb: 2, display: "flex", alignItems: "center" }}
             >
-              <Settings fontSize="small" sx={{ mr: 1 }} />
+              <Settings
+                fontSize="small"
+                sx={{
+                  mr: 1,
+                  color: "primary.main",
+                }}
+              />
               {t("Project Settings")}
             </Typography>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
-                <FormControl fullWidth>
+                <FormControl
+                  fullWidth
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: 2,
+                      transition: "transform 0.2s ease",
+                      "&:hover": {
+                        transform: "translateY(-2px)",
+                      },
+                      "&.Mui-focused": {
+                        transform: "translateY(-2px)",
+                      },
+                    },
+                  }}
+                >
                   <InputLabel id="project-type-label">
                     {t("Project Type")}
                   </InputLabel>
@@ -238,6 +270,18 @@ const ProjectSettings: React.FC<ProjectSettingsProps> = ({
                 startIcon={<Save />}
                 onClick={handleSaveClick}
                 fullWidth
+                sx={{
+                  borderRadius: 2,
+                  py: 1.5,
+                  borderWidth: 2,
+                  transition: "all 0.2s ease",
+                  "&:hover": {
+                    borderWidth: 2,
+                    transform: "translateY(-2px)",
+                    boxShadow: (theme: Theme) =>
+                      `0 4px 12px ${theme.palette.primary.main}20`,
+                  },
+                }}
               >
                 {t("Save Current Model")}
               </Button>
@@ -246,6 +290,18 @@ const ProjectSettings: React.FC<ProjectSettingsProps> = ({
                 startIcon={<FolderOpen />}
                 onClick={handleLoadClick}
                 fullWidth
+                sx={{
+                  borderRadius: 2,
+                  py: 1.5,
+                  borderWidth: 2,
+                  transition: "all 0.2s ease",
+                  "&:hover": {
+                    borderWidth: 2,
+                    transform: "translateY(-2px)",
+                    boxShadow: (theme: Theme) =>
+                      `0 4px 12px ${theme.palette.primary.main}20`,
+                  },
+                }}
               >
                 {t("Load Saved Model")}
               </Button>
@@ -255,7 +311,16 @@ const ProjectSettings: React.FC<ProjectSettingsProps> = ({
       </Paper>
 
       {/* Save Model Dialog */}
-      <Dialog open={activeDialog === "saveModel"} onClose={handleClose}>
+      <Dialog
+        open={activeDialog === "saveModel"}
+        onClose={handleClose}
+        PaperProps={{
+          sx: {
+            borderRadius: 2,
+            p: 1,
+          },
+        }}
+      >
         <DialogTitle>{t("Save Current Model")}</DialogTitle>
         <DialogContent>
           <TextField
@@ -282,7 +347,16 @@ const ProjectSettings: React.FC<ProjectSettingsProps> = ({
       </Dialog>
 
       {/* Load Model Dialog */}
-      <Dialog open={activeDialog === "loadModel"} onClose={handleClose}>
+      <Dialog
+        open={activeDialog === "loadModel"}
+        onClose={handleClose}
+        PaperProps={{
+          sx: {
+            borderRadius: 2,
+            p: 1,
+          },
+        }}
+      >
         <DialogTitle>{t("Load Saved Model")}</DialogTitle>
         <DialogContent>
           <FormControl fullWidth sx={{ mt: 1 }}>
