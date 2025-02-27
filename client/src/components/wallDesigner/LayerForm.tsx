@@ -41,8 +41,8 @@ interface LayerFormProps {
     field: keyof LayerType,
     value: string | number
   ) => void;
-  onRemove: (id: string) => void;
-  moveLayer: (dragIndex: number, hoverIndex: number) => void;
+  onRemove?: (id: string) => void;
+  moveLayer?: (dragIndex: number, hoverIndex: number) => void;
   isSelected: boolean;
 }
 
@@ -88,7 +88,7 @@ const LayerForm: React.FC<LayerFormProps> = ({
         return;
       }
 
-      moveLayer(dragIndex, hoverIndex);
+      moveLayer?.(dragIndex, hoverIndex);
 
       item.index = hoverIndex;
     },
@@ -219,7 +219,8 @@ const LayerForm: React.FC<LayerFormProps> = ({
             />
             <IconButton
               aria-label="delete"
-              onClick={() => onRemove(layer.id)}
+              onClick={() => onRemove?.(layer.id)}
+              disabled={!onRemove}
               color="error"
             >
               <DeleteIcon />

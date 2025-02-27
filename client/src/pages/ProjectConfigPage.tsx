@@ -4,11 +4,39 @@ import ProjectSettings from "../components/wallDesigner/ProjectSettings";
 import { LayerType } from "../types";
 
 const ProjectConfigPage: React.FC = () => {
-  const [projectType, setProjectType] = useState<string>("");
-  const [projectLocation, setProjectLocation] = useState<string>("");
-  const [modelType, setModelType] = useState<string>("");
-  const [isolationType, setIsolationType] = useState<string>("");
-  const [wallColor, setWallColor] = useState<string>("");
+  const [projectSettings, setProjectSettings] = useState({
+    projectType: "",
+    projectLocation: "",
+    modelType: "",
+    isolationType: "",
+    wallColor: "",
+  });
+
+  const [workflowState, setWorkflowState] = useState({
+    isProjectConfigured: false,
+    isModelConfigured: false,
+  });
+
+  const updateProjectSetting = (field: string, value: string) => {
+    setProjectSettings((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  // Update workflow state when settings change
+  React.useEffect(() => {
+    setWorkflowState({
+      isProjectConfigured: Boolean(
+        projectSettings.projectType && projectSettings.projectLocation
+      ),
+      isModelConfigured: Boolean(
+        projectSettings.modelType &&
+          projectSettings.isolationType &&
+          (projectSettings.modelType !== "קיר חוץ" || projectSettings.wallColor)
+      ),
+    });
+  }, [projectSettings]);
   const [savedModels, setSavedModels] = useState<{
     [key: string]: LayerType[];
   }>({});
@@ -31,16 +59,9 @@ const ProjectConfigPage: React.FC = () => {
         Project Configuration
       </Typography>
       <ProjectSettings
-        projectType={projectType}
-        projectLocation={projectLocation}
-        onProjectTypeChange={setProjectType}
-        onProjectLocationChange={setProjectLocation}
-        modelType={modelType}
-        isolationType={isolationType}
-        wallColor={wallColor}
-        onModelTypeChange={setModelType}
-        onIsolationTypeChange={setIsolationType}
-        onWallColorChange={setWallColor}
+        projectSettings={projectSettings}
+        workflowState={workflowState}
+        updateProjectSetting={updateProjectSetting}
         savedModels={savedModels}
         onSaveModel={handleSaveModel}
         onLoadModel={handleLoadModel}

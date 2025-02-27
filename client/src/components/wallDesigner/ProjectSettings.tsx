@@ -15,38 +15,34 @@ import {
   DialogActions,
   TextField,
   Theme,
+  Alert,
 } from "@mui/material";
 import { Settings, Save, FolderOpen } from "@mui/icons-material";
 import { LayerType } from "../../types";
 import useTranslations from "../../hooks/useTranslations";
 
 interface ProjectSettingsProps {
-  projectType: string;
-  projectLocation: string;
-  onProjectTypeChange: (value: string) => void;
-  onProjectLocationChange: (value: string) => void;
-  modelType: string;
-  isolationType: string;
-  wallColor: string;
-  onModelTypeChange: (value: string) => void;
-  onIsolationTypeChange: (value: string) => void;
-  onWallColorChange: (value: string) => void;
+  projectSettings: {
+    projectType: string;
+    projectLocation: string;
+    modelType: string;
+    isolationType: string;
+    wallColor: string;
+  };
+  workflowState: {
+    isProjectConfigured: boolean;
+    isModelConfigured: boolean;
+  };
+  updateProjectSetting: (field: string, value: string) => void;
   savedModels: { [key: string]: LayerType[] };
   onSaveModel: (modelName: string) => void;
   onLoadModel: (modelName: string) => void;
 }
 
 const ProjectSettings: React.FC<ProjectSettingsProps> = ({
-  projectType,
-  projectLocation,
-  onProjectTypeChange,
-  onProjectLocationChange,
-  modelType,
-  isolationType,
-  wallColor,
-  onModelTypeChange,
-  onIsolationTypeChange,
-  onWallColorChange,
+  projectSettings,
+  workflowState,
+  updateProjectSetting,
   savedModels,
   onSaveModel,
   onLoadModel,
@@ -145,9 +141,11 @@ const ProjectSettings: React.FC<ProjectSettingsProps> = ({
                   </InputLabel>
                   <Select
                     labelId="project-type-label"
-                    value={projectType}
+                    value={projectSettings.projectType}
                     label={t("Project Type")}
-                    onChange={(e) => onProjectTypeChange(e.target.value)}
+                    onChange={(e) =>
+                      updateProjectSetting("projectType", e.target.value)
+                    }
                   >
                     <MenuItem value="">
                       <em>בחר</em>
@@ -165,9 +163,11 @@ const ProjectSettings: React.FC<ProjectSettingsProps> = ({
                   </InputLabel>
                   <Select
                     labelId="project-location-label"
-                    value={projectLocation}
+                    value={projectSettings.projectLocation}
                     label={t("Project Location")}
-                    onChange={(e) => onProjectLocationChange(e.target.value)}
+                    onChange={(e) =>
+                      updateProjectSetting("projectLocation", e.target.value)
+                    }
                   >
                     <MenuItem value="">
                       <em>בחר</em>
@@ -180,6 +180,11 @@ const ProjectSettings: React.FC<ProjectSettingsProps> = ({
                 </FormControl>
               </Grid>
             </Grid>
+            {!workflowState.isProjectConfigured && (
+              <Alert severity="info" sx={{ mt: 2 }}>
+                {t("Please complete project settings before proceeding")}
+              </Alert>
+            )}
           </Grid>
 
           {/* Model Settings */}
@@ -193,15 +198,20 @@ const ProjectSettings: React.FC<ProjectSettingsProps> = ({
             </Typography>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
-                <FormControl fullWidth>
+                <FormControl
+                  fullWidth
+                  disabled={!workflowState.isProjectConfigured}
+                >
                   <InputLabel id="model-type-label">
                     {t("Model Type")}
                   </InputLabel>
                   <Select
                     labelId="model-type-label"
-                    value={modelType}
+                    value={projectSettings.modelType}
                     label={t("Model Type")}
-                    onChange={(e) => onModelTypeChange(e.target.value)}
+                    onChange={(e) =>
+                      updateProjectSetting("modelType", e.target.value)
+                    }
                   >
                     <MenuItem value="">
                       <em>בחר</em>
@@ -213,15 +223,20 @@ const ProjectSettings: React.FC<ProjectSettingsProps> = ({
                 </FormControl>
               </Grid>
               <Grid item xs={12} sm={6}>
-                <FormControl fullWidth>
+                <FormControl
+                  fullWidth
+                  disabled={!workflowState.isProjectConfigured}
+                >
                   <InputLabel id="isolation-type-label">
                     {t("Isolation Type")}
                   </InputLabel>
                   <Select
                     labelId="isolation-type-label"
-                    value={isolationType}
+                    value={projectSettings.isolationType}
                     label={t("Isolation Type")}
-                    onChange={(e) => onIsolationTypeChange(e.target.value)}
+                    onChange={(e) =>
+                      updateProjectSetting("isolationType", e.target.value)
+                    }
                   >
                     <MenuItem value="">
                       <em>בחר</em>
@@ -231,17 +246,22 @@ const ProjectSettings: React.FC<ProjectSettingsProps> = ({
                   </Select>
                 </FormControl>
               </Grid>
-              {modelType === "קיר חוץ" && (
+              {projectSettings.modelType === "קיר חוץ" && (
                 <Grid item xs={12}>
-                  <FormControl fullWidth>
+                  <FormControl
+                    fullWidth
+                    disabled={!workflowState.isProjectConfigured}
+                  >
                     <InputLabel id="wall-color-label">
                       {t("Wall Color")}
                     </InputLabel>
                     <Select
                       labelId="wall-color-label"
-                      value={wallColor}
+                      value={projectSettings.wallColor}
                       label={t("Wall Color")}
-                      onChange={(e) => onWallColorChange(e.target.value)}
+                      onChange={(e) =>
+                        updateProjectSetting("wallColor", e.target.value)
+                      }
                     >
                       <MenuItem value="">
                         <em>בחר</em>
@@ -253,6 +273,12 @@ const ProjectSettings: React.FC<ProjectSettingsProps> = ({
                 </Grid>
               )}
             </Grid>
+            {workflowState.isProjectConfigured &&
+              !workflowState.isModelConfigured && (
+                <Alert severity="info" sx={{ mt: 2 }}>
+                  {t("Please complete model settings before adding layers")}
+                </Alert>
+              )}
           </Grid>
 
           {/* Saved Models Controls */}
@@ -270,6 +296,7 @@ const ProjectSettings: React.FC<ProjectSettingsProps> = ({
                 startIcon={<Save />}
                 onClick={handleSaveClick}
                 fullWidth
+                disabled={!workflowState.isModelConfigured}
                 sx={{
                   borderRadius: 2,
                   py: 1.5,
@@ -290,6 +317,7 @@ const ProjectSettings: React.FC<ProjectSettingsProps> = ({
                 startIcon={<FolderOpen />}
                 onClick={handleLoadClick}
                 fullWidth
+                disabled={!workflowState.isModelConfigured}
                 sx={{
                   borderRadius: 2,
                   py: 1.5,

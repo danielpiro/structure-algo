@@ -41,3 +41,16 @@ export interface SelectFieldProps {
 }
 
 export type ModelType = "Wall";
+
+export interface ProjectSettings {
+  projectType: string;
+  projectLocation: string;
+  modelType: string;
+  isolationType: string;
+  wallColor: string;
+}
+
+export interface WorkflowState {
+  isProjectConfigured: boolean;
+  isModelConfigured: boolean;
+}

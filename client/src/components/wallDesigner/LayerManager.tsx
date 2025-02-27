@@ -23,10 +23,10 @@ interface LayerManagerProps {
     field: keyof LayerType,
     value: string | number
   ) => void;
-  onAddLayer: () => void;
-  onRemoveLayer: (id: string) => void;
-  onRemoveAllLayers: () => void;
-  onReorderLayers: (startIndex: number, endIndex: number) => void;
+  onAddLayer?: () => void;
+  onRemoveLayer?: (id: string) => void;
+  onRemoveAllLayers?: () => void;
+  onReorderLayers?: (startIndex: number, endIndex: number) => void;
   selectedLayerId?: string;
 }
 
@@ -64,7 +64,8 @@ const LayerManager: React.FC<LayerManagerProps> = ({
             variant="contained"
             color="primary"
             startIcon={<Add />}
-            onClick={onAddLayer}
+            onClick={onAddLayer || undefined}
+            disabled={!onAddLayer}
           >
             {t("Add Layer")}
           </Button>
@@ -72,8 +73,8 @@ const LayerManager: React.FC<LayerManagerProps> = ({
             variant="outlined"
             color="error"
             startIcon={<Delete />}
-            onClick={onRemoveAllLayers}
-            disabled={layers.length === 0}
+            onClick={onRemoveAllLayers || undefined}
+            disabled={layers.length === 0 || !onRemoveAllLayers}
           >
             {t("Delete All Layers")}
           </Button>

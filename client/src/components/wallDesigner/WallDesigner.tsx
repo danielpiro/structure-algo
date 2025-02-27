@@ -16,6 +16,9 @@ import SidebarPanel from "./SidebarPanel";
 export const WallDesigner: React.FC = () => {
   const {
     layers,
+    projectSettings,
+    workflowState,
+    updateProjectSetting,
     handleLayerChange,
     handleAddLayer,
     handleRemoveLayer,
@@ -23,18 +26,17 @@ export const WallDesigner: React.FC = () => {
     updateLayers,
   } = useWallDesigner();
 
+  // Properly type the updateProjectSetting function
+  const handleProjectSettingUpdate = (field: string, value: string) => {
+    updateProjectSetting(field as keyof typeof projectSettings, value);
+  };
+
   const [items, setItems] = useState<Model[]>([]);
   const [selectedLayer, setSelectedLayer] = useState<LayerType | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [savedModels, setSavedModels] = useState<{
     [key: string]: LayerType[];
   }>({});
-
-  const [projectType, setProjectType] = useState<string>("");
-  const [projectLocation, setProjectLocation] = useState<string>("");
-  const [modelType, setModelType] = useState<string>("");
-  const [isolationType, setIsolationType] = useState<string>("");
-  const [wallColor, setWallColor] = useState<string>("");
 
   // Handler for when a layer is clicked in the 3D model
   const handleLayerClick = useCallback((layer: LayerType) => {
@@ -48,29 +50,37 @@ export const WallDesigner: React.FC = () => {
   }, []);
 
   const handleRemoveAllLayers = useCallback(() => {
-    updateLayers([]);
-    setItems([]);
-    setSelectedLayer(null);
-    setSidebarOpen(false);
+    if (updateLayers) {
+      updateLayers([]);
+      setItems([]);
+      setSelectedLayer(null);
+      setSidebarOpen(false);
+    }
   }, [updateLayers]);
 
   const saveCurrentModel = useCallback(
     (modelName: string) => {
-      setSavedModels((prevModels) => ({
-        ...prevModels,
-        [modelName]: layers,
-      }));
+      if (workflowState.isModelConfigured) {
+        setSavedModels((prevModels) => ({
+          ...prevModels,
+          [modelName]: layers,
+        }));
+      }
     },
-    [layers]
+    [layers, workflowState.isModelConfigured]
   );
 
   const loadSavedModel = useCallback(
     (modelName: string) => {
-      if (savedModels[modelName]) {
+      if (
+        workflowState.isModelConfigured &&
+        savedModels[modelName] &&
+        updateLayers
+      ) {
         updateLayers(savedModels[modelName]);
       }
     },
-    [savedModels, updateLayers]
+    [savedModels, updateLayers, workflowState.isModelConfigured]
   );
 
   useEffect(() => {
@@ -110,16 +120,9 @@ export const WallDesigner: React.FC = () => {
           <Container maxWidth="xl">
             {/* Settings Panel */}
             <ProjectSettings
-              projectType={projectType}
-              projectLocation={projectLocation}
-              onProjectTypeChange={setProjectType}
-              onProjectLocationChange={setProjectLocation}
-              modelType={modelType}
-              isolationType={isolationType}
-              wallColor={wallColor}
-              onModelTypeChange={setModelType}
-              onIsolationTypeChange={setIsolationType}
-              onWallColorChange={setWallColor}
+              projectSettings={projectSettings}
+              workflowState={workflowState}
+              updateProjectSetting={handleProjectSettingUpdate}
               savedModels={savedModels}
               onSaveModel={saveCurrentModel}
               onLoadModel={loadSavedModel}
@@ -139,10 +142,26 @@ export const WallDesigner: React.FC = () => {
                   <LayerManager
                     layers={layers}
                     onLayerChange={handleLayerChange}
-                    onAddLayer={handleAddLayer}
-                    onRemoveLayer={handleRemoveLayer}
-                    onRemoveAllLayers={handleRemoveAllLayers}
-                    onReorderLayers={handleSwapLayers}
+                    onAddLayer={
+                      workflowState.isModelConfigured
+                        ? handleAddLayer
+                        : undefined
+                    }
+                    onRemoveLayer={
+                      workflowState.isModelConfigured
+                        ? handleRemoveLayer
+                        : undefined
+                    }
+                    onRemoveAllLayers={
+                      workflowState.isModelConfigured
+                        ? handleRemoveAllLayers
+                        : undefined
+                    }
+                    onReorderLayers={
+                      workflowState.isModelConfigured
+                        ? handleSwapLayers
+                        : undefined
+                    }
                     selectedLayerId={selectedLayer?.id}
                   />
                 </Paper>
@@ -195,11 +214,11 @@ export const WallDesigner: React.FC = () => {
                   <Grid item>
                     <ResultsPanel
                       items={items}
-                      projectType={projectType}
-                      projectLocation={projectLocation}
-                      modelType={modelType}
-                      isolationType={isolationType}
-                      wallColor={wallColor}
+                      projectType={projectSettings.projectType}
+                      projectLocation={projectSettings.projectLocation}
+                      modelType={projectSettings.modelType}
+                      isolationType={projectSettings.isolationType}
+                      wallColor={projectSettings.wallColor}
                     />
                   </Grid>
                 </Grid>

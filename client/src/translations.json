@@ -103,5 +103,7 @@
   "Range": "טווח",
   "Add layers to see the 3D model": "הוסף שכבות כדי לראות את המודל התלת מימדי",
   "Thermal Efficiency": "יעילות תרמית",
-  "Select a layer from the model to view details": "בחר שכבה מהמודל כדי להציג פרטים"
+  "Select a layer from the model to view details": "בחר שכבה מהמודל כדי להציג פרטים",
+  "Please complete project settings before proceeding": "אנא השלם את הגדרות הפרויקט לפני שתמשיך",
+  "Please complete model settings before adding layers": "אנא השלם את הגדרות המודל לפני הוספת שכבות"
 }
