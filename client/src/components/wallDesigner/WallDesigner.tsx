@@ -1,6 +1,13 @@
 // src/components/wallDesigner/WallDesigner.tsx
 import React, { useState, useEffect, useCallback } from "react";
-import { Container, Grid, Box, Paper, IconButton } from "@mui/material";
+import {
+  Container,
+  Grid,
+  Box,
+  Paper,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -129,63 +136,143 @@ export const WallDesigner: React.FC = () => {
             />
             {/* Main Content */}
             <Grid container spacing={4}>
+              {/* Left Side - Layer Manager */}
               <Grid item xs={12} md={5}>
                 <Paper
+                  elevation={0}
                   sx={{
-                    p: 3,
-                    bgcolor: "white",
+                    p: 0,
+                    bgcolor: "background.paper",
                     borderRadius: 2,
-                    boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
                     height: "100%",
+                    overflow: "hidden",
+                    border: 1,
+                    borderColor: "divider",
                   }}
                 >
-                  <LayerManager
-                    layers={layers}
-                    onLayerChange={handleLayerChange}
-                    onAddLayer={
-                      workflowState.isModelConfigured
-                        ? handleAddLayer
-                        : undefined
-                    }
-                    onRemoveLayer={
-                      workflowState.isModelConfigured
-                        ? handleRemoveLayer
-                        : undefined
-                    }
-                    onRemoveAllLayers={
-                      workflowState.isModelConfigured
-                        ? handleRemoveAllLayers
-                        : undefined
-                    }
-                    onReorderLayers={
-                      workflowState.isModelConfigured
-                        ? handleSwapLayers
-                        : undefined
-                    }
-                    selectedLayerId={selectedLayer?.id}
-                  />
+                  <Box
+                    sx={{
+                      p: 3,
+                      borderBottom: 1,
+                      borderColor: "divider",
+                      bgcolor: "background.dark",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        mb: 1,
+                      }}
+                    >
+                      <Typography
+                        variant="h6"
+                        color="text.primary"
+                        fontWeight={500}
+                      >
+                        Layer Configuration
+                      </Typography>
+                      {workflowState.isProjectConfigured &&
+                        !workflowState.isModelConfigured && (
+                          <Typography
+                            variant="caption"
+                            color="primary"
+                            sx={{ fontStyle: "italic" }}
+                          >
+                            Complete model settings to start
+                          </Typography>
+                        )}
+                    </Box>
+                  </Box>
+                  <Box sx={{ p: 3 }}>
+                    <LayerManager
+                      layers={layers}
+                      onLayerChange={handleLayerChange}
+                      onAddLayer={
+                        workflowState.isModelConfigured
+                          ? handleAddLayer
+                          : undefined
+                      }
+                      onRemoveLayer={
+                        workflowState.isModelConfigured
+                          ? handleRemoveLayer
+                          : undefined
+                      }
+                      onRemoveAllLayers={
+                        workflowState.isModelConfigured
+                          ? handleRemoveAllLayers
+                          : undefined
+                      }
+                      onReorderLayers={
+                        workflowState.isModelConfigured
+                          ? handleSwapLayers
+                          : undefined
+                      }
+                      selectedLayerId={selectedLayer?.id}
+                    />
+                  </Box>
                 </Paper>
               </Grid>
+
               {/* Right Side - 3D Model and Results */}
               <Grid item xs={12} md={7}>
-                <Grid container direction="column" spacing={4}>
+                <Grid container direction="column" spacing={3}>
                   {/* 3D Model */}
                   <Grid item>
                     <Paper
+                      elevation={0}
                       sx={{
-                        bgcolor: "white",
+                        bgcolor: "background.paper",
                         borderRadius: 2,
-                        boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
                         overflow: "hidden",
                         position: "relative",
+                        border: 1,
+                        borderColor: "divider",
                       }}
                     >
-                      <Box sx={{ height: 500, width: "100%" }}>
-                        <ModelViewer
-                          layers={layers}
-                          onLayerClick={handleLayerClick}
-                          selectedLayerId={selectedLayer?.id}
-                        />
+                      <Box
+                        sx={{
+                          p: 3,
+                          borderBottom: 1,
+                          borderColor: "divider",
+                          bgcolor: "background.dark",
+                        }}
+                      >
+                        <Typography
+                          variant="h6"
+                          color="text.primary"
+                          fontWeight={500}
+                        >
+                          Model Preview
+                        </Typography>
+                      </Box>
+                      <Box sx={{ p: 3 }}>
+                        <Box
+                          sx={{
+                            height: 450,
+                            width: "100%",
+                            bgcolor:
+                              layers.length === 0
+                                ? "background.dark"
+                                : "transparent",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
+                        >
+                          {layers.length === 0 ? (
+                            <Typography color="text.secondary">
+                              Add layers to see the 3D model
+                            </Typography>
+                          ) : (
+                            <ModelViewer
+                              layers={layers}
+                              onLayerClick={handleLayerClick}
+                              selectedLayerId={selectedLayer?.id}
+                            />
+                          )}
+                        </Box>
                       </Box>
 
                       {/* Toggle button for the sidebar */}
@@ -196,9 +283,10 @@ export const WallDesigner: React.FC = () => {
                             top: 16,
                             right: 16,
                             bgcolor: "background.paper",
-                            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                            border: 1,
+                            borderColor: "divider",
                             "&:hover": {
-                              bgcolor: "background.paper",
+                              bgcolor: "background.dark",
                             },
                           }}
                           onClick={() => setSidebarOpen(true)}
@@ -212,14 +300,43 @@ export const WallDesigner: React.FC = () => {
 
                   {/* Results Panel */}
                   <Grid item>
-                    <ResultsPanel
-                      items={items}
-                      projectType={projectSettings.projectType}
-                      projectLocation={projectSettings.projectLocation}
-                      modelType={projectSettings.modelType}
-                      isolationType={projectSettings.isolationType}
-                      wallColor={projectSettings.wallColor}
-                    />
+                    <Paper
+                      elevation={0}
+                      sx={{
+                        bgcolor: "background.paper",
+                        borderRadius: 2,
+                        overflow: "hidden",
+                        border: 1,
+                        borderColor: "divider",
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          p: 3,
+                          borderBottom: 1,
+                          borderColor: "divider",
+                          bgcolor: "background.dark",
+                        }}
+                      >
+                        <Typography
+                          variant="h6"
+                          color="text.primary"
+                          fontWeight={500}
+                        >
+                          Results
+                        </Typography>
+                      </Box>
+                      <Box sx={{ p: 3 }}>
+                        <ResultsPanel
+                          items={items}
+                          projectType={projectSettings.projectType}
+                          projectLocation={projectSettings.projectLocation}
+                          modelType={projectSettings.modelType}
+                          isolationType={projectSettings.isolationType}
+                          wallColor={projectSettings.wallColor}
+                        />
+                      </Box>
+                    </Paper>
                   </Grid>
                 </Grid>
               </Grid>

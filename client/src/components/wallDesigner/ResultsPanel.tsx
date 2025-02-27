@@ -77,10 +77,7 @@ const ResultsPanel: React.FC<ResultsPanelProps> = ({
 
   const mass = useMemo(() => {
     const temp = items.reduce((total, item) => {
-      const itemMass =
-        item.thickness !== undefined
-          ? (item.thickness / 100) * item.specificMass
-          : 0;
+      const itemMass = (item.thickness / 100) * item.specificMass;
       return total + itemMass;
     }, 0);
 
@@ -133,7 +130,6 @@ const ResultsPanel: React.FC<ResultsPanelProps> = ({
     t,
   ]);
 
-  // Calculate thermal efficiency percentage
   const efficiencyPercentage = useMemo(() => {
     if (requiredResistance && totalThermalResistance) {
       const percentage = (totalThermalResistance / requiredResistance) * 100;
@@ -146,356 +142,414 @@ const ResultsPanel: React.FC<ResultsPanelProps> = ({
     <Paper
       elevation={0}
       sx={{
-        p: 3,
-        bgcolor: "white",
+        bgcolor: "background.paper",
         borderRadius: 2,
-        boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+        overflow: "hidden",
+        border: 1,
+        borderColor: "divider",
       }}
     >
-      <Typography variant="h5" component="h2" fontWeight="bold" gutterBottom>
-        {t("Algorithm Results")}
-      </Typography>
+      <Box sx={{ p: 3 }}>
+        <Typography variant="h5" component="h2" fontWeight="bold" gutterBottom>
+          {t("Algorithm Results")}
+        </Typography>
 
-      <Grid container spacing={4}>
-        {/* Calculation Results Section */}
-        <Grid item xs={12} md={7}>
-          <Typography variant="h6" fontWeight="bold" gutterBottom>
-            {t("Calculation Results")}
-          </Typography>
+        <Grid container spacing={4}>
+          {/* Calculation Results Section */}
+          <Grid item xs={12} md={7}>
+            {calculationError ? (
+              <Alert severity="warning" sx={{ mb: 3 }}>
+                {calculationError}
+              </Alert>
+            ) : isInsulationSufficient === null ? (
+              <Alert severity="info" sx={{ mb: 3 }}>
+                {t("Waiting for all parameters to be set")}...
+              </Alert>
+            ) : (
+              <Box>
+                {/* Success/Error Alert */}
+                <Alert
+                  severity={isInsulationSufficient ? "success" : "error"}
+                  sx={{ mb: 3 }}
+                  variant="outlined"
+                >
+                  {isInsulationSufficient
+                    ? t(
+                        "Great job! Your insulation meets or exceeds the required standards."
+                      )
+                    : t(
+                        "Consider adding more insulation to meet the required standards."
+                      )}
+                </Alert>
 
-          {calculationError ? (
-            <Alert severity="warning" sx={{ mb: 3 }}>
-              {calculationError}
-            </Alert>
-          ) : isInsulationSufficient === null ? (
-            <Alert severity="info" sx={{ mb: 3 }}>
-              {t("Waiting for all parameters to be set")}...
-            </Alert>
-          ) : (
-            <Box>
-              {/* Thermal Resistance Gauge */}
-              <Card sx={{ mb: 3, overflow: "visible" }}>
-                <CardContent>
-                  <Grid container spacing={2} alignItems="center">
-                    <Grid item xs={12}>
+                {/* Main Metrics Card */}
+                <Card
+                  elevation={0}
+                  sx={{
+                    mb: 3,
+                    overflow: "visible",
+                    border: 1,
+                    borderColor: "divider",
+                    bgcolor: "background.paper",
+                  }}
+                >
+                  <CardContent>
+                    <Grid container spacing={2} alignItems="center">
+                      {/* Thermal Efficiency Gauge */}
+                      <Grid item xs={12}>
+                        <Typography
+                          variant="body2"
+                          color="text.secondary"
+                          gutterBottom
+                        >
+                          {t("Thermal Efficiency")}
+                        </Typography>
+                        <Box sx={{ position: "relative", pt: 1, pb: 3 }}>
+                          <LinearProgress
+                            variant="determinate"
+                            value={efficiencyPercentage}
+                            sx={{
+                              height: 10,
+                              borderRadius: 5,
+                              mb: 1,
+                              backgroundColor: "rgba(61, 141, 122, 0.1)",
+                              "& .MuiLinearProgress-bar": {
+                                borderRadius: 5,
+                                backgroundColor: theme.palette.primary.main,
+                                opacity: isInsulationSufficient ? 1 : 0.6,
+                              },
+                            }}
+                          />
+                          <Box
+                            sx={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              position: "absolute",
+                              width: "100%",
+                            }}
+                          >
+                            <Typography
+                              variant="caption"
+                              color="text.secondary"
+                            >
+                              0%
+                            </Typography>
+                            <Typography
+                              variant="caption"
+                              color="text.secondary"
+                            >
+                              50%
+                            </Typography>
+                            <Typography
+                              variant="caption"
+                              color="text.secondary"
+                            >
+                              100%
+                            </Typography>
+                            <Typography
+                              variant="caption"
+                              color="text.secondary"
+                            >
+                              150%+
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </Grid>
+
+                      {/* Main Values */}
+                      <Grid item xs={12} sm={6}>
+                        <Typography
+                          variant="h3"
+                          component="div"
+                          fontWeight="bold"
+                          color={theme.palette.primary.main}
+                        >
+                          {totalThermalResistance.toFixed(2)}
+                        </Typography>
+                        <Typography variant="subtitle1" color="text.secondary">
+                          {t("Total Thermal Resistance")} (m²·K/W)
+                        </Typography>
+                      </Grid>
+
+                      <Grid item xs={12} sm={6}>
+                        <Typography
+                          variant="h3"
+                          component="div"
+                          fontWeight="bold"
+                        >
+                          {requiredResistance !== null
+                            ? requiredResistance.toFixed(2)
+                            : "N/A"}
+                        </Typography>
+                        <Typography variant="subtitle1" color="text.secondary">
+                          {t("Required Thermal Resistance")} (m²·K/W)
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  </CardContent>
+                </Card>
+
+                {/* Additional Metrics */}
+                <Grid container spacing={2}>
+                  {/* R-Value */}
+                  <Grid item xs={12} sm={4}>
+                    <Paper
+                      elevation={0}
+                      sx={{
+                        p: 2,
+                        bgcolor: "background.dark",
+                        borderRadius: 2,
+                        height: "100%",
+                        border: 1,
+                        borderColor: "divider",
+                        transition: "transform 0.2s ease-in-out",
+                        "&:hover": {
+                          transform: "translateY(-2px)",
+                        },
+                      }}
+                    >
                       <Typography
-                        variant="body2"
+                        variant="caption"
                         color="text.secondary"
                         gutterBottom
+                        display="block"
                       >
-                        {t("Thermal Efficiency")}
+                        {t("Total R-Value")}
                       </Typography>
-
-                      <Box sx={{ position: "relative", pt: 1, pb: 3 }}>
-                        <LinearProgress
-                          variant="determinate"
-                          value={efficiencyPercentage}
-                          sx={{
-                            height: 10,
-                            borderRadius: 5,
-                            mb: 1,
-                            backgroundColor: theme.palette.grey[200],
-                            "& .MuiLinearProgress-bar": {
-                              borderRadius: 5,
-                              backgroundColor: isInsulationSufficient
-                                ? theme.palette.success.main
-                                : theme.palette.error.main,
-                            },
-                          }}
-                        />
-
-                        <Box
-                          sx={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            position: "absolute",
-                            width: "100%",
-                          }}
-                        >
-                          <Typography variant="caption" color="text.secondary">
-                            0%
-                          </Typography>
-                          <Typography variant="caption" color="text.secondary">
-                            50%
-                          </Typography>
-                          <Typography variant="caption" color="text.secondary">
-                            100%
-                          </Typography>
-                          <Typography variant="caption" color="text.secondary">
-                            150%+
-                          </Typography>
-                        </Box>
-                      </Box>
-                    </Grid>
-
-                    <Grid item xs={12} sm={6}>
-                      <Typography
-                        variant="h3"
-                        component="div"
-                        fontWeight="bold"
-                        color={
-                          isInsulationSufficient ? "success.main" : "error.main"
-                        }
-                      >
-                        {totalThermalResistance.toFixed(2)}
+                      <Typography variant="h6" fontWeight="bold">
+                        {totalR.toFixed(3)} m²·K/W
                       </Typography>
-                      <Typography variant="subtitle1" color="text.secondary">
-                        {t("Total Thermal Resistance")} (m²·K/W)
-                      </Typography>
-                    </Grid>
-
-                    <Grid item xs={12} sm={6}>
-                      <Typography
-                        variant="h3"
-                        component="div"
-                        fontWeight="bold"
-                      >
-                        {requiredResistance !== null
-                          ? requiredResistance.toFixed(2)
-                          : "N/A"}
-                      </Typography>
-                      <Typography variant="subtitle1" color="text.secondary">
-                        {t("Required Thermal Resistance")} (m²·K/W)
-                      </Typography>
-                    </Grid>
+                    </Paper>
                   </Grid>
-                </CardContent>
-              </Card>
 
-              {/* Status Message */}
-              <Alert
-                severity={isInsulationSufficient ? "success" : "error"}
-                sx={{ mb: 3 }}
-              >
-                {isInsulationSufficient
-                  ? t(
-                      "Great job! Your insulation meets or exceeds the required standards."
-                    )
-                  : t(
-                      "Consider adding more insulation to meet the required standards."
-                    )}
-              </Alert>
+                  {/* U-Value */}
+                  <Grid item xs={12} sm={4}>
+                    <Paper
+                      elevation={0}
+                      sx={{
+                        p: 2,
+                        bgcolor: "background.dark",
+                        borderRadius: 2,
+                        height: "100%",
+                        border: 1,
+                        borderColor: "divider",
+                        transition: "transform 0.2s ease-in-out",
+                        "&:hover": {
+                          transform: "translateY(-2px)",
+                        },
+                      }}
+                    >
+                      <Typography
+                        variant="caption"
+                        color="text.secondary"
+                        gutterBottom
+                        display="block"
+                      >
+                        {t("U-Value")}
+                      </Typography>
+                      <Typography variant="h6" fontWeight="bold">
+                        {uValue.toFixed(3)} W/(m²·K)
+                      </Typography>
+                    </Paper>
+                  </Grid>
 
-              {/* Additional Metrics */}
+                  {/* Mass */}
+                  <Grid item xs={12} sm={4}>
+                    <Paper
+                      elevation={0}
+                      sx={{
+                        p: 2,
+                        bgcolor: "background.dark",
+                        borderRadius: 2,
+                        height: "100%",
+                        border: 1,
+                        borderColor: "divider",
+                        transition: "transform 0.2s ease-in-out",
+                        "&:hover": {
+                          transform: "translateY(-2px)",
+                        },
+                      }}
+                    >
+                      <Typography
+                        variant="caption"
+                        color="text.secondary"
+                        gutterBottom
+                        display="block"
+                      >
+                        {t("Total Mass")}
+                      </Typography>
+                      <Typography variant="h6" fontWeight="bold">
+                        {mass.toFixed(2)} kg/m²
+                      </Typography>
+                    </Paper>
+                  </Grid>
+                </Grid>
+              </Box>
+            )}
+          </Grid>
+
+          {/* Project Details Section */}
+          <Grid item xs={12} md={5}>
+            <Typography variant="h6" fontWeight="bold" gutterBottom>
+              {t("Project Details")}
+            </Typography>
+
+            <Paper
+              elevation={0}
+              sx={{
+                p: 3,
+                bgcolor: "background.dark",
+                borderRadius: 2,
+                border: 1,
+                borderColor: "divider",
+                mb: 3,
+                transition: "all 0.2s ease-in-out",
+                "&:hover": {
+                  transform: "translateY(-2px)",
+                  boxShadow: 1,
+                },
+              }}
+            >
               <Grid container spacing={2}>
-                <Grid item xs={12} sm={4}>
-                  <Box
-                    sx={{
-                      p: 2,
-                      backgroundColor: "background.default",
-                      borderRadius: 2,
-                      height: "100%",
-                    }}
-                  >
-                    <Typography
-                      variant="caption"
-                      color="text.secondary"
-                      gutterBottom
-                    >
-                      {t("Total R-Value")}
-                    </Typography>
-                    <Typography variant="h6" fontWeight="bold">
-                      {totalR.toFixed(3)} m²·K/W
-                    </Typography>
-                  </Box>
-                </Grid>
-
-                <Grid item xs={12} sm={4}>
-                  <Box
-                    sx={{
-                      p: 2,
-                      backgroundColor: "background.default",
-                      borderRadius: 2,
-                      height: "100%",
-                    }}
-                  >
-                    <Typography
-                      variant="caption"
-                      color="text.secondary"
-                      gutterBottom
-                    >
-                      {t("U-Value")}
-                    </Typography>
-                    <Typography variant="h6" fontWeight="bold">
-                      {uValue.toFixed(3)} W/(m²·K)
-                    </Typography>
-                  </Box>
-                </Grid>
-
-                <Grid item xs={12} sm={4}>
-                  <Box
-                    sx={{
-                      p: 2,
-                      backgroundColor: "background.default",
-                      borderRadius: 2,
-                      height: "100%",
-                    }}
-                  >
-                    <Typography
-                      variant="caption"
-                      color="text.secondary"
-                      gutterBottom
-                    >
-                      {t("Total Mass")}
-                    </Typography>
-                    <Typography variant="h6" fontWeight="bold">
-                      {mass.toFixed(2)} kg/m²
-                    </Typography>
-                  </Box>
-                </Grid>
-              </Grid>
-            </Box>
-          )}
-        </Grid>
-
-        {/* Project Configuration & Layer Info Section */}
-        <Grid item xs={12} md={5}>
-          <Typography variant="h6" fontWeight="bold" gutterBottom>
-            {t("Project Details")}
-          </Typography>
-
-          <Box
-            sx={{
-              p: 2,
-              backgroundColor: "background.default",
-              borderRadius: 2,
-              mb: 3,
-            }}
-          >
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <Typography
-                  variant="caption"
-                  color="text.secondary"
-                  gutterBottom
-                  display="block"
-                >
-                  {t("Project Type")}
-                </Typography>
-                <Typography variant="body2" fontWeight="medium">
-                  {projectType || "לא נקבע"}
-                </Typography>
-              </Grid>
-
-              <Grid item xs={6}>
-                <Typography
-                  variant="caption"
-                  color="text.secondary"
-                  gutterBottom
-                  display="block"
-                >
-                  {t("Project Location")}
-                </Typography>
-                <Typography variant="body2" fontWeight="medium">
-                  {projectLocation || "לא נקבע"}
-                </Typography>
-              </Grid>
-
-              <Grid item xs={6}>
-                <Typography
-                  variant="caption"
-                  color="text.secondary"
-                  gutterBottom
-                  display="block"
-                >
-                  {t("Model Type")}
-                </Typography>
-                <Typography variant="body2" fontWeight="medium">
-                  {modelType || "לא נקבע"}
-                </Typography>
-              </Grid>
-
-              <Grid item xs={6}>
-                <Typography
-                  variant="caption"
-                  color="text.secondary"
-                  gutterBottom
-                  display="block"
-                >
-                  {t("Isolation Type")}
-                </Typography>
-                <Typography variant="body2" fontWeight="medium">
-                  {isolationType || "לא נקבע"}
-                </Typography>
-              </Grid>
-
-              {modelType === "קיר חוץ" && (
-                <Grid item xs={12}>
+                <Grid item xs={6}>
                   <Typography
                     variant="caption"
                     color="text.secondary"
                     gutterBottom
                     display="block"
                   >
-                    {t("Wall Color")}
+                    {t("Project Type")}
                   </Typography>
                   <Typography variant="body2" fontWeight="medium">
-                    {wallColor || "לא נקבע"}
+                    {projectType || t("Not set")}
                   </Typography>
                 </Grid>
-              )}
-            </Grid>
-          </Box>
 
-          <Typography variant="h6" fontWeight="bold" gutterBottom>
-            {t("Layer Configuration")}
-          </Typography>
+                <Grid item xs={6}>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    gutterBottom
+                    display="block"
+                  >
+                    {t("Project Location")}
+                  </Typography>
+                  <Typography variant="body2" fontWeight="medium">
+                    {projectLocation || t("Not set")}
+                  </Typography>
+                </Grid>
 
-          {items.length === 0 ? (
-            <Alert severity="info">{t("No items added yet.")}</Alert>
-          ) : (
-            <Box
-              sx={{
-                maxHeight: 300,
-                overflow: "auto",
-                p: 2,
-                backgroundColor: "background.default",
-                borderRadius: 2,
-              }}
-            >
-              <List disablePadding>
-                {items.map((item, index) => (
-                  <React.Fragment key={`${item.product}-${index}`}>
-                    {index > 0 && <Divider component="li" />}
-                    <ListItem sx={{ px: 0 }}>
-                      <ListItemText
-                        primary={
-                          <Typography variant="subtitle2" fontWeight="bold">
-                            {item.product}
-                          </Typography>
-                        }
-                        secondary={
-                          <Box sx={{ mt: 1 }}>
-                            <Chip
-                              size="small"
-                              label={`${t(
-                                "Thickness"
-                              )}: ${item.thickness?.toFixed(1)} ${t("cm")}`}
-                              sx={{ mr: 1, mb: 1 }}
-                            />
-                            <Chip
-                              size="small"
-                              label={`λ: ${item.thermalConductivity.toFixed(
-                                3
-                              )} W/(m·K)`}
-                              sx={{ mr: 1, mb: 1 }}
-                            />
-                            <Chip
-                              size="small"
-                              label={`${t("Mass")}: ${item.specificMass} kg/m³`}
-                              sx={{ mb: 1 }}
-                            />
-                          </Box>
-                        }
-                      />
-                    </ListItem>
-                  </React.Fragment>
-                ))}
-              </List>
-            </Box>
-          )}
+                <Grid item xs={6}>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    gutterBottom
+                    display="block"
+                  >
+                    {t("Model Type")}
+                  </Typography>
+                  <Typography variant="body2" fontWeight="medium">
+                    {modelType || t("Not set")}
+                  </Typography>
+                </Grid>
+
+                <Grid item xs={6}>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    gutterBottom
+                    display="block"
+                  >
+                    {t("Isolation Type")}
+                  </Typography>
+                  <Typography variant="body2" fontWeight="medium">
+                    {isolationType || t("Not set")}
+                  </Typography>
+                </Grid>
+
+                {modelType === "קיר חוץ" && (
+                  <Grid item xs={12}>
+                    <Typography
+                      variant="caption"
+                      color="text.secondary"
+                      gutterBottom
+                      display="block"
+                    >
+                      {t("Wall Color")}
+                    </Typography>
+                    <Typography variant="body2" fontWeight="medium">
+                      {wallColor || t("Not set")}
+                    </Typography>
+                  </Grid>
+                )}
+              </Grid>
+            </Paper>
+
+            <Typography variant="h6" fontWeight="bold" gutterBottom>
+              {t("Layer Configuration")}
+            </Typography>
+
+            {items.length === 0 ? (
+              <Alert severity="info">{t("No items added yet.")}</Alert>
+            ) : (
+              <Paper
+                elevation={0}
+                sx={{
+                  p: 3,
+                  bgcolor: "background.dark",
+                  borderRadius: 2,
+                  border: 1,
+                  borderColor: "divider",
+                  maxHeight: 300,
+                  overflow: "auto",
+                }}
+              >
+                <List disablePadding>
+                  {items.map((item, index) => (
+                    <React.Fragment key={`${item.product}-${index}`}>
+                      {index > 0 && <Divider />}
+                      <ListItem sx={{ px: 0 }}>
+                        <ListItemText
+                          primary={
+                            <Typography variant="subtitle2" fontWeight="bold">
+                              {item.product}
+                            </Typography>
+                          }
+                          secondary={
+                            <Box sx={{ mt: 1 }}>
+                              <Chip
+                                size="small"
+                                label={`${t(
+                                  "Thickness"
+                                )}: ${item.thickness?.toFixed(1)} ${t("cm")}`}
+                                sx={{ mr: 1, mb: 1 }}
+                              />
+                              <Chip
+                                size="small"
+                                label={`λ: ${item.thermalConductivity.toFixed(
+                                  3
+                                )} W/(m·K)`}
+                                sx={{ mr: 1, mb: 1 }}
+                              />
+                              <Chip
+                                size="small"
+                                label={`${t("Mass")}: ${
+                                  item.specificMass
+                                } kg/m³`}
+                                sx={{ mb: 1 }}
+                              />
+                            </Box>
+                          }
+                        />
+                      </ListItem>
+                    </React.Fragment>
+                  ))}
+                </List>
+              </Paper>
+            )}
+          </Grid>
         </Grid>
-      </Grid>
+      </Box>
     </Paper>
   );
 };

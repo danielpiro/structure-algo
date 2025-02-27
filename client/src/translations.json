@@ -105,5 +105,17 @@
   "Thermal Efficiency": "יעילות תרמית",
   "Select a layer from the model to view details": "בחר שכבה מהמודל כדי להציג פרטים",
   "Please complete project settings before proceeding": "אנא השלם את הגדרות הפרויקט לפני שתמשיך",
-  "Please complete model settings before adding layers": "אנא השלם את הגדרות המודל לפני הוספת שכבות"
+  "Please complete model settings before adding layers": "אנא השלם את הגדרות המודל לפני הוספת שכבות",
+  "Home": "דף הבית",
+  "Projects": "פרויקטים",
+  "Models": "מודלים",
+  "Results": "תוצאות",
+  "Start New Project": "התחל פרויקט חדש",
+  "Menu": "תפריט",
+  "My Account": "החשבון שלי",
+  "Settings": "הגדרות",
+  "Logout": "יציאה",
+  "Navigate to home": "חזור לדף הבית",
+  "Thermal": "תרמי",
+  "Design": "עיצוב"
 }
