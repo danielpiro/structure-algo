@@ -1,29 +1,29 @@
 export const palette = {
   primary: {
-    main: "#1565C0", // Darker blue for better contrast
-    light: "#1E88E5",
-    dark: "#0D47A1",
+    main: "#3D8D7A", // Modern sage green
+    light: "#4FA894",
+    dark: "#2C665A",
     contrastText: "#FFFFFF",
   },
   secondary: {
-    main: "#2C2C2C", // Darker gray for better contrast
-    light: "#424242",
-    dark: "#1A1A1A",
-    contrastText: "#FFFFFF",
+    main: "#A4C3B2", // Muted green
+    light: "#C6D8CE",
+    dark: "#6E8C7B",
+    contrastText: "#1A1A1A",
   },
   action: {
-    active: "#1565C0",
-    hover: "#1976D2",
+    active: "#3D8D7A",
+    hover: "#4FA894",
   },
   background: {
-    default: "#FFFFFF", // White background
-    paper: "#F8F9FA", // Very light gray
-    dark: "#E9ECEF",
+    default: "#FCFCFC", // Almost white
+    paper: "#F6F9F8", // Very light green tint
+    dark: "#EDF3F0",
   },
   text: {
-    primary: "#1A1A1A", // Almost black for maximum contrast
-    secondary: "#4A4A4A", // Darker gray for better readability
-    light: "#FFFFFF", // White for contrast text
+    primary: "#1C3832", // Dark green for primary text
+    secondary: "#4B635C", // Muted green for secondary text
+    light: "#FFFFFF",
   },
   success: {
     main: "#4CAF50",
@@ -31,18 +31,18 @@ export const palette = {
     dark: "#388E3C",
   },
   error: {
-    main: "#F44336",
-    light: "#E57373",
+    main: "#E57373", // Softer red to match theme
+    light: "#FFCDD2",
     dark: "#D32F2F",
   },
   warning: {
-    main: "#FF9800",
-    light: "#FFB74D",
+    main: "#FFB74D", // Softer orange to match theme
+    light: "#FFE0B2",
     dark: "#F57C00",
   },
   info: {
-    main: "#2196F3",
-    light: "#64B5F6",
+    main: "#64B5F6", // Softer blue to match theme
+    light: "#BBDEFB",
     dark: "#1976D2",
   },
 };
